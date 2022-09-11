@@ -16,4 +16,6 @@ Download the FF6KefkaRush.zip file, and extract it.  Run the EXE, locate your MA
 (These have either reported bugs or offered an improvement that was implemented during the 0.x phase)
 - None yet because this just got released...
 
+NOTE:  This is a beta release.  **This will have bugs!**  Please let me know of those bugs as you encounter them.  Thanks!
+
 # Enjoy and good luck!

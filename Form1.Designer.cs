@@ -297,6 +297,7 @@ namespace FF6KefkaRush
 			this.monsterAreaAppropriate.TabIndex = 60;
 			this.monsterAreaAppropriate.Text = "Involve only monsters associated with the area";
 			this.monsterAreaAppropriate.UseVisualStyleBackColor = true;
+			this.monsterAreaAppropriate.Visible = false;
 			this.monsterAreaAppropriate.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
 			// treasureTypes
@@ -311,6 +312,7 @@ namespace FF6KefkaRush
 			this.treasureTypes.Name = "treasureTypes";
 			this.treasureTypes.Size = new System.Drawing.Size(148, 28);
 			this.treasureTypes.TabIndex = 59;
+			this.treasureTypes.Visible = false;
 			this.treasureTypes.SelectedIndexChanged += new System.EventHandler(this.DetermineFlags);
 			// 
 			// label14
@@ -321,6 +323,7 @@ namespace FF6KefkaRush
 			this.label14.Size = new System.Drawing.Size(105, 20);
 			this.label14.TabIndex = 57;
 			this.label14.Text = "Treasure Types";
+			this.label14.Visible = false;
 			// 
 			// settingHero
 			// 

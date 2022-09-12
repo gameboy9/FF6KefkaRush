@@ -248,15 +248,16 @@ namespace FF6KefkaRush.Inventory
 
 		readonly List<MonsterTiers> allMonsterTiers = new()
 		{
+			new MonsterTiers(4900, new List<int> { 1, 26, 20, 71, 78, 41, 24 }, new List<int> {  }, 60, 275, 1, 1, 6, true, 6), // Opening fights
 			new MonsterTiers(5000, new List<int> { 1, 28, 26, 20, 71, 78 }, new List<int> { 101 }, 90, 275, 1, 11, 0, true, 25), // Narshe dungeon maze
 			new MonsterTiers(5300, new List<int> { 102, 29, 160, 122, 64 }, new List<int> { 331 }, 250, 1500, 1, 19, 0, true, 25), // Kefka @ Narshe
 			new MonsterTiers(5500, new List<int> { 35, 57, 58 }, new List<int> { 301 }, 400, 1000, 1, 14, 6, true, 25), // Lethe River
-			new MonsterTiers(5700, new List<int> { 80, 9, 15, 91, 163, 187, 16, 306 }, new List<int> { 263 }, 80, 800, 1, 16, 6, false, 25), // Phantom Train
-			new MonsterTiers(5800, new List<int> { 42, 119, 48, 25, 341 }, new List<int> { 342 }, 80, 500, 1, 43, 6, true, 6), // Baren Falls
+			new MonsterTiers(5700, new List<int> { 80, 9, 15, 91, 163, 187, 16 }, new List<int> { 263 }, 80, 800, 1, 16, 6, false, 25), // Phantom Train
+			new MonsterTiers(5800, new List<int> { 42, 119, 48, 25, 341 }, new List<int> { 342 }, 80, 500, 1, 32, 6, true, 6), // Baren Falls
 			new MonsterTiers(5900, new List<int> { 35, 57, 58 }, new List<int> { }, 400, 2400, 1, 36, 0, true, 0), // Serpent Trench
 			new MonsterTiers(6100, new List<int> { 116, 210 }, new List<int> { 302 }, 350, 1000, 1, 25, 0, true, 0), // Opera House
 			new MonsterTiers(6700, new List<int> { 68, 228 }, new List<int> { 276, 361 }, 900, 5000, 2, 38, 0, true, 25), // Approach to Floating Continent
-			new MonsterTiers(8100, new List<int> { 307, 305, 294, 300, 308, 314, 324, 356, 357 }, new List<int> { 37, 359 }, 1800, 11000, 3, 46, 6, false, 25), // Cultist's Tower
+			new MonsterTiers(8100, new List<int> { 307, 305, 294, 300, 308, 314, 324, 356, 357 }, new List<int> { 37, 359 }, 3000, 11000, 3, 46, 6, false, 25), // Cultist's Tower
 			new MonsterTiers(9700, new List<int> { 115, 179, 214 }, new List<int> {  }, 600, 2500, 1), // Solitary Island Monster Rush
 			new MonsterTiers(9900, new List<int> { 214, 54, 212, 89, 39, 77, 125, 92, 168, 49, 286, 179, 154, 153, 50, 139, 138, 44, 63, 186, 61, 203, 115, 96, 136, 53, 40, 152, 211, 34, 220, 196, 231, 213, 60, 177 }, new List<int> { }, 500, 2000, 1, 42, 6, true, 25) // Falcon Monster Rush
 		};
@@ -336,10 +337,11 @@ namespace FF6KefkaRush.Inventory
 
 					singleGroup sg = new singleGroup();
 					sg.id = initialPartyID + i;
+
 					sg.battle_background_asset_id = i % 20 == 19 && battleBackground == 16 ? 34 : battleBackground;
 					sg.battle_bgm_asset_id = i % 20 == 19 ? bossbgm : bgm;
 					sg.appearance_production = 1;
-					sg.script_name = 0;
+					sg.script_name = initialPartyID == 8100 ? 9024 : 0; // Cultist's Tower - mandatory magic
 					sg.battle_pattern1 = 1;
 					sg.battle_pattern2 = i % 20 == 19 ? 0 : 1;
 					sg.battle_pattern3 = i % 20 == 19 ? 0 : 1;
@@ -348,11 +350,10 @@ namespace FF6KefkaRush.Inventory
 					sg.battle_pattern6 = 0;
 					sg.not_escape = i % 20 == 19 || noEscape ? 1 : 0;
 					sg.battle_flag_group_id = sg.battle_bgm_asset_id == 0 ? 17 : 0; // 11?  Need to watch the deaths!
-					// get_value TBD
 					sg.get_ap = 0;
 
-					sg.monster1_group = sg.monster2_group = sg.monster3_group = sg.monster4_group = sg.monster5_group =
-						sg.monster6_group = sg.monster7_group = sg.monster8_group = sg.monster9_group = 1;
+					sg.monster1_group = sg.monster2_group = sg.monster3_group = sg.monster4_group = sg.monster5_group = 2;
+					sg.monster6_group = sg.monster7_group = sg.monster8_group = sg.monster9_group = 1;
 					sg.monster1_x_position = 60;
 					sg.monster2_x_position = 55;
 					sg.monster3_x_position = 50;
@@ -387,8 +388,8 @@ namespace FF6KefkaRush.Inventory
 						double temp = r1.Next() % 25;
 						magicPoints += temp / 10;
 					}
+					magicPoints = Math.Max(1, magicPoints);
 					sg.get_value = (int)(magicPoints * magicPointBoost);
-					sg.get_value = sg.get_value == 0 ? 1 : sg.get_value;
 
 					int origXpLimit = (int)xpLimit;
 					int minXPLimit = origXpLimit * 3 / 4;

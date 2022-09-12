@@ -9,10 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using CsvHelper.Configuration.Attributes;
 using FF6KefkaRush.Common;
+using System.Diagnostics;
+using System.Threading;
 
 namespace FF6KefkaRush.Randomize
 {
-	public class Treasure
+	public static class Treasure
 	{
 		private class message
 		{
@@ -40,7 +42,15 @@ namespace FF6KefkaRush.Randomize
 			public int type_value { get; set; }
 		}
 
-		public Treasure(Random r1, string directory, string csvDirectory, List<int> equippable)
+		private class scenarioScript
+		{
+			public int id { get; set; }
+			public string winScript { get; set; }
+			public string startScript { get; set; }
+			public int characterID { get; set; }
+		}
+
+		public static void createTreasure(Random r1, string directory, string csvDirectory, List<int> equippable)
 		{
 			//List<string> treasureDirectories = new()
 			//{
@@ -233,132 +243,57 @@ namespace FF6KefkaRush.Randomize
 
 			List<int> minigameSelections = new List<int> { 0, 3, 5, 7, 8, 9, 11, 17, 31, 49 }; // 47 is also available
 
-			// TODO:  Shuffle, then establish starter scripts.
 			minigameSelections.Shuffle(r1);
+			minigameSelections = new List<int> { minigameSelections[0], minigameSelections[1], minigameSelections[2], minigameSelections[3], minigameSelections[4], minigameSelections[5] };
+			minigameSelections.Sort();
+			minigameSelections.Add(50);
 
-			////////////////////////////////////////////
-			// Now we need to cycle through the four super item scripts and place treasures in there.  We also will have to update the text accordingly.
-			string[] winScripts = new string[] {
-				"Map_30011\\Map_30011_2\\sc_e_0018_2.json", // 0
-				"",
-				"",
-				"Map_20030\\Map_20030\\sc_e_0259_1.json",
-				"",
-				"Map_30390\\Map_30390\\sc_e_0065_1.json", // 5
-				"",
-				"Map_30440\\Map_30440\\sc_e_0214_1.json",
-				"Map_30480\\Map_30480\\sc_e_0218_2.json",
-				"Map_20121\\Map_20121_4\\sc_e_1502_3.json",
-				"", // 10
-				"Map_20161\\Map_20161_6\\sc_e_0344_2.json",
-				"",
-				"",
-				"",
-				"", // 15
-				"",
-				"Map_30600\\Map_30600\\sc_e_0565_3.json",
-				"",
-				"",
-				"", // 20
-				"",
-				"",
-				"",
-				"",
-				"", // 25
-				"",
-				"",
-				"",
-				"",
-				"", // 30
-				"Map_30750\\Map_30750\\sc_e_0881_1.json",
-				"",
-				"",
-				"",
-				"", // 35
-				"",
-				"",
-				"",
-				"",
-				"", // 40
-				"",
-				"",
-				"",
-				"",
-				"", // 45
-				"",
-				"Map_20291\\Map_20291_1\\sc_e_0625.json",
-				"",
-				"Map_Script\\Resident\\sc_secede_gau.json" // 49
+			List<scenarioScript> scScripts = new List<scenarioScript>()
+			{
+				new scenarioScript { id = 0, characterID = 51, startScript = "narshemines.json", winScript = "Map_30011\\Map_30011_2\\sc_e_0018_2.json"},
+				new scenarioScript { id = 3, characterID = 142, startScript = "kefkaatnarshe.json", winScript = "Map_20030\\Map_20030\\sc_e_0259_1.json"}, // Empire Soldier, not Kefka, already used.
+				new scenarioScript { id = 5, characterID = 49, startScript = "letheriver.json", winScript = "Map_30390\\Map_30390\\sc_e_0065_1.json"},
+				new scenarioScript { id = 7, characterID = 139, startScript = "phantomtrain.json", winScript = "Map_30440\\Map_30440\\sc_e_0214_1.json"},
+				new scenarioScript { id = 8, characterID = 71, startScript = "barenfalls.json", winScript = "Map_30480\\Map_30480\\sc_e_0218_2.json"},
+				new scenarioScript { id = 9, characterID = 99, startScript = "serpenttrench.json", winScript = "Map_20121\\Map_20121_4\\sc_e_1502_3.json"}, // Helmet
+				new scenarioScript { id = 11, characterID = 47, startScript = "operahouse.json", winScript = "Map_20161\\Map_20161_6\\sc_e_0344_2.json"},
+				new scenarioScript { id = 17, characterID = 50, startScript = "imperialairforce.json", winScript = "Map_30600\\Map_30600\\sc_e_0565_3.json"},
+				new scenarioScript { id = 31, characterID = 203, startScript = "cultiststower.json", winScript = "Map_30750\\Map_30750\\sc_e_0881_1.json"},
+				//new scenarioScript { id = 47, characterID = 51, startScript = "solitaryisland.json", winScript = "Map_20291\\Map_20291_1\\sc_e_0625.json"},
+				new scenarioScript { id = 49, characterID = 44, startScript = "falcon.json", winScript = "Map_Script\\Resident\\sc_secede_gau.json"},
+				new scenarioScript { id = 50, characterID = 51, startScript = "", winScript = "Map_40012\\Map_40012\\sc_e_1053.json"}
 			};
 
-			// We also need to infuse the scripts at Map_40012.
-			// sc_e_0065_2
-			// sc_e_0135_1
-			// sc_e_0256_1
-			// sc_e_0258_1
-			// sc_e_0302_1
-			// sc_e_0328_1
-			// sc_e_0569_1
-			// sc_e_0607_9
-			// sc_e_0828_1
-			// sc_e_0966_3_1
-			string[] startScripts = new string[] {
-				"narshemines.json", // 0
-				"",
-				"",
-				"kefkaatnarshe.json",
-				"",
-				"letheriver.json", // 5
-				"",
-				"phantomtrain.json",
-				"barenfalls.json",
-				"serpenttrench.json",
-				"", // 10
-				"operahouse.json",
-				"",
-				"",
-				"",
-				"", // 15
-				"",
-				"imperialairforce.json",
-				"",
-				"",
-				"", // 20
-				"",
-				"",
-				"",
-				"",
-				"", // 25
-				"",
-				"",
-				"",
-				"",
-				"", // 30
-				"cultiststower.json",
-				"",
-				"",
-				"",
-				"", // 35
-				"",
-				"",
-				"",
-				"",
-				"", // 40
-				"",
-				"",
-				"",
-				"",
-				"", // 45
-				"",
-				"solitaryisland.json",
-				"",
-				"falcon.json" // 49
-			};
+			// TODO:  Iterate through mini-games and set asset IDs for entity_default in Map_40012.
+			string json3 = File.ReadAllText(Path.Combine(directory, "Map_40012", "Map_40012", "entity_default.json"));
+			EntityJSON jEvents3 = JsonConvert.DeserializeObject<EntityJSON>(json3);
+
+			foreach (var layer in jEvents3.layers)
+				foreach (var sObject in layer.objects)
+				{
+					if (sObject.properties.Where(p => p.name == "script_id" && (long)p.value >= 1256 && (long)p.value <= 1261).Any())
+					{
+						long scriptID1 = (long)(sObject.properties.Where(p => p.name == "script_id" && (long)p.value >= 1256 && (long)p.value <= 1261).First().value);
+						EntityJSON.Property1 singleProp = sObject.properties.Where(p => p.name == "asset_id" && (long)p.value > 0).SingleOrDefault();
+						if (singleProp != null)
+						{
+							singleProp.value = scScripts.Where(c => c.id == minigameSelections[(int)scriptID1 - 1256]).Single().characterID;
+						}
+					}
+				}
+
+			JsonSerializer serializer1 = new JsonSerializer();
+
+			using (StreamWriter sw = new StreamWriter(Path.Combine(directory, "Map_40012", "Map_40012", "entity_default.json")))
+			using (JsonWriter writer = new JsonTextWriter(sw))
+			{
+				serializer1.Serialize(writer, jEvents3);
+			}
 
 			string[] ff6StartScripts = new string[6] { "sc_e_0065_2.json", "sc_e_0135_1.json", "sc_e_0256_1.json", "sc_e_0258_1.json", "sc_e_0302_1.json", "sc_e_0328_1.json" }; // , "sc_e_0569_1.json", "sc_e_0607_9.json", "sc_e_0828_1.json", "sc_e_0966_3_1.json"
 			for (int i = 0; i < ff6StartScripts.Count(); i++)
 			{
-				File.Copy(Path.Combine("scenario", startScripts[minigameSelections[i]]), Path.Combine(directory, "Map_40012", "Map_40012", ff6StartScripts[i]), true);
+				File.Copy(Path.Combine("scenario", scScripts.Where(c => c.id == minigameSelections[i]).Single().startScript), Path.Combine(directory, "Map_40012", "Map_40012", ff6StartScripts[i]), true);
 				// TODO: Fill in MISSION_01-10 as well.
 				string json = File.ReadAllText(Path.Combine(directory, "Map_40012", "Map_40012", ff6StartScripts[i]));
 				EventJSON jEvents = JsonConvert.DeserializeObject<EventJSON>(json);
@@ -389,15 +324,12 @@ namespace FF6KefkaRush.Randomize
 
 			List<List<int>> finalItems = new List<List<int>>();
 			List<int> magiciteUsed = new List<int>();
-			const int itemsToGrant = 4;
-			foreach (string script in winScripts)
+			int branchFlags = 0;
+			int setFlags = 0;
+			foreach (int game in minigameSelections)
 			{
-				if (script == "" || !minigameSelections.Contains(scriptID))
-				{
-					finalItems.Add(new List<int>());
-					scriptID++;
-					continue;
-				}
+				bool allScenarios = (game == 50);
+				string script = scScripts.Where(c => c.id == game).Single().winScript;
 				string json = File.ReadAllText(Path.Combine(directory, script));
 				EventJSON jEvents = JsonConvert.DeserializeObject<EventJSON>(json);
 				List<int> scriptItems = new List<int>();
@@ -405,27 +337,41 @@ namespace FF6KefkaRush.Randomize
 				int getItems = 0;
 				foreach (var singleScript in jEvents.Mnemonics)
 				{
+					if (!allScenarios && singleScript.mnemonic == "Branch" && singleScript.operands.sValues[0] == "ScenarioFlag3" && singleScript.operands.iValues[0] > 100)
+					{
+						branchFlags++;
+						singleScript.operands.iValues[0] = 100 + branchFlags;
+					}
+					if (!allScenarios && singleScript.mnemonic == "SetFlag" && singleScript.operands.sValues[0] == "ScenarioFlag3" && singleScript.operands.iValues[0] > 100)
+					{
+						setFlags++;
+						singleScript.operands.iValues[0] = 100 + setFlags;
+					}
 					if (singleScript.mnemonic == "GetItem")
 					{
 						int level = getItems / 4;
 						getItems++;
-						int minTier = 2 + (scriptID / 20) + level;
+						int minTier = (allScenarios ? 5 : 3) + level;
 						int maxTier = minTier + 2;
-						maxTier = maxTier > 9 ? 9 : maxTier;
+						minTier = Math.Min(8, minTier);
+						maxTier = Math.Min(9, maxTier);
 						int finalItem = -1;
 						List<int> itemsAvailable = new List<int>();
 						
-						itemsAvailable.AddRange(new Weapons().getList(minTier, maxTier, true, equippable));
-						itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
-						itemsAvailable.AddRange(new Accessories().getList(minTier, maxTier, true, equippable));
+						List<int> magicite = new Magicite().getList(magiciteUsed, Math.Min(6, minTier), Math.Min(8, maxTier));
 
-						if ((level == 0 && r1.Next() % 5 == 0) || (level >= 1 && r1.Next() % 2 == 0) || level >= 2)
-							itemsAvailable.AddRange(new Magicite().getList(magiciteUsed, 3, 4 + level));
+						itemsAvailable.AddRange(magicite);
+						if ((level == 0 && r1.Next() % 3 > 0) || (level == 1 && r1.Next() % 2 > 0) || magicite.Count == 0)
+						{
+							itemsAvailable.AddRange(new Weapons().getList(minTier, maxTier, true, equippable));
+							itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
+							itemsAvailable.AddRange(new Accessories().getList(minTier, maxTier, true, equippable));
+						}
 
 						if (itemsAvailable.Count > 0)
 							finalItem = itemsAvailable[r1.Next() % itemsAvailable.Count];
 
-						if (new Magicite().getList(magiciteUsed, 3, 4 + level).Contains(finalItem))
+						if (magicite.Contains(finalItem))
 							magiciteUsed.Add(finalItem);
 
 						singleScript.operands.iValues[0] = finalItem;
@@ -433,7 +379,7 @@ namespace FF6KefkaRush.Randomize
 						scriptItems.Add(finalItem);
 					}
 
-					int miniGame = minigameSelections.IndexOf(scriptID) + 1;
+					int miniGame = minigameSelections.IndexOf(game) + 1;
 					if (singleScript.mnemonic == "Msg" && singleScript.operands.sValues[0].Contains("_REWARD_") && miniGame >= 0)
 					{
 						rewardMsg++;
@@ -453,99 +399,93 @@ namespace FF6KefkaRush.Randomize
 				scriptID++;
 			}
 
-			foreach (string CSV in CSVs)
+			List<Thread> threads = new List<Thread>();
+			Parallel.ForEach(CSVs, csv =>
 			{
-				List<message> records = new List<message>();
-				using (StreamReader reader = new StreamReader(Path.Combine("Data", "Message", CSV)))
-				{
-					CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
-					config.Delimiter = "\t";
-					config.HasHeaderRecord = false;
-					config.BadDataFound = null;
+				fillInScript(finalItems, minigameSelections, csv, csvDirectory);
+			});
+		}
 
-					using (CsvReader csv = new CsvReader(reader, config))
-						records = csv.GetRecords<message>().ToList();
-				}
+		public static void fillInScript(List<List<int>> finalItems, List<int> minigameSelections, string CSV, string csvDirectory)
+		{
+			List<message> records = new List<message>();
+			using (StreamReader reader = new StreamReader(Path.Combine("Data", "Message", CSV)))
+			{
+				CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
+				config.Delimiter = "\t";
+				config.HasHeaderRecord = false;
+				config.BadDataFound = null;
 
-				for (int j = 1; j <= 6; j++)
+				using (CsvReader csv = new CsvReader(reader, config))
+					records = csv.GetRecords<message>().ToList();
+			}
+
+			for (int j = 1; j <= 7; j++)
+			{
+				for (int k = 1; k <= 5; k++)
 				{
-					for (int k = 1; k <= 5; k++)
+					string found = "";
+					message record = records.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim() + "_REWARD_0" + k.ToString().Trim()).Single();
+					string level = (k == 1 ? "Bronze" : k == 2 ? "Silver" : k == 3 ? "Gold" : k == 4 ? "Diamond" : "Adamant");
+					for (int i = 0; i < 4; i++)
 					{
-						string found = "";
-						message record = records.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim() + "_REWARD_0" + k.ToString().Trim()).Single();
-						string level = (k == 1 ? "Bronze" : k == 2 ? "Silver" : k == 3 ? "Gold" : k == 4 ? "Diamond" : "Adamant");
-						for (int i = 0; i < 4; i++)
-						{
-							int finalItem = finalItems[minigameSelections[j - 1]].Count < 5 ? -1 : finalItems[minigameSelections[j - 1]][((k - 1) * 4) + i];
+						int finalItem = finalItems[j - 1].Count < 5 ? -1 : finalItems[j - 1][((k - 1) * 4) + i];
 
-							if (finalItem != -1)
-								found += "You won " + itemLookup(itemIDLookup(finalItem), CSV.Replace("story_mes_", "").Replace(".txt", "")) + "!\\n";
-						}
+						if (finalItem != -1)
+							found += "You won " + itemLookup(itemIDLookup(finalItem), CSV.Replace("story_mes_", "").Replace(".txt", "")) + "!\\n";
+					}
 
+					if (j < 7)
 						record.msgString = "You won at the " + level + " level!<P>\\n" + (found == "" ? "You won nothing!" : found);
-					}
-
-					message missionRecord = records.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim()).Single();
-					switch (minigameSelections[j - 1])
-					{
-						case 0:
-							missionRecord.msgString = "Defend the Narshe Mines!\\nChoose your difficulty."; break;
-						case 3:
-							missionRecord.msgString = "It's Kefka @ Narshe Time!\\nChoose your difficulty."; break;
-						case 5:
-							missionRecord.msgString = "Traverse the Lethe River!\\nChoose your difficulty."; break;
-						case 7:
-							missionRecord.msgString = "All aboard the Phantom Train!\\nChoose your difficulty."; break;
-						case 8:
-							missionRecord.msgString = "It's a long way down Baren Falls!\\nChoose your difficulty."; break;
-						case 9:
-							missionRecord.msgString = "Zoom through the Serpent Trench!\\nChoose your difficulty."; break;
-						case 11:
-							missionRecord.msgString = "Ultros is trying to ruin the Opera!\\nChoose your difficulty."; break;
-						case 17:
-							missionRecord.msgString = "Here comes the Imperial Air Force! (IAF)\\nChoose your difficulty."; break;
-						case 31:
-							missionRecord.msgString = "It's magic only at the Fanatics Tower!\\nChoose your difficulty."; break;
-						case 47:
-							missionRecord.msgString = "Save Cid at Solitary Island!\\nChoose your difficulty."; break;
-						case 49:
-							missionRecord.msgString = "Monsters have invaded the Falcon!\\nAre you ready?"; break;
-						default:
-							missionRecord.msgString = "Not implemented!\nChoose your difficulty anyway."; break;
-					}
+					else
+						record.msgString = "You completed all scenarios at the " + level + " level!<P>\\n" + (found == "" ? "You won nothing!" : found);
 				}
 
-				// TODO:  Mission texts
-
-
-				using (StreamWriter writer = new StreamWriter(Path.Combine(csvDirectory, CSV)))
+				message missionRecord = records.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim()).Single();
+				switch (minigameSelections[j - 1])
 				{
-					CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
-					config.Delimiter = "\t";
-					config.HasHeaderRecord = false;
-
-					using (CsvWriter csv = new CsvWriter(writer, config))
-						csv.WriteRecords(records);
+					case 0:
+						missionRecord.msgString = "Defend the Narshe Mines!\\nChoose your difficulty."; break;
+					case 3:
+						missionRecord.msgString = "It's Kefka @ Narshe Time!\\nChoose your difficulty."; break;
+					case 5:
+						missionRecord.msgString = "Traverse the Lethe River!\\nChoose your difficulty."; break;
+					case 7:
+						missionRecord.msgString = "All aboard the Phantom Train!\\nChoose your difficulty."; break;
+					case 8:
+						missionRecord.msgString = "It's a long way down Baren Falls!\\nChoose your difficulty."; break;
+					case 9:
+						missionRecord.msgString = "Zoom through the Serpent Trench!\\nChoose your difficulty."; break;
+					case 11:
+						missionRecord.msgString = "Ultros is trying to ruin the Opera!\\nChoose your difficulty."; break;
+					case 17:
+						missionRecord.msgString = "Here comes the Imperial Air Force! (IAF)\\nChoose your difficulty."; break;
+					case 31:
+						missionRecord.msgString = "It's magic only at the Fanatics Tower!\\nChoose your difficulty."; break;
+					case 47:
+						missionRecord.msgString = "Save Cid at Solitary Island!\\nChoose your difficulty."; break;
+					case 49:
+						missionRecord.msgString = "Monsters have invaded the Falcon!\\nAre you ready?"; break;
+					default:
+						missionRecord.msgString = "Not implemented!\nChoose your difficulty anyway."; break;
 				}
+			}
+
+			message practiceMission = records.Where(c => c.id == "MISSION_10").Single();
+			practiceMission.msgString = "Here you can engage a practice fight.  There will be no special reward, but you will get XP if required.\nChoose your difficulty.";
+
+			using (StreamWriter writer = new StreamWriter(Path.Combine(csvDirectory, CSV)))
+			{
+				CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
+				config.Delimiter = "\t";
+				config.HasHeaderRecord = false;
+
+				using (CsvWriter csv = new CsvWriter(writer, config))
+					csv.WriteRecords(records);
 			}
 		}
 
-		private int RateThatTreasury(Random r1, ref int type)
-        {
-			type = r1.Next() % 8;
-			if (type >= 4) type = 4;
-			int rnd = r1.Next() % 511;
-			return (rnd == 0 ? 9 :
-					rnd <= 2 ? 8 :
-					rnd <= 6 ? 7 :
-					rnd <= 14 ? 6 :
-					rnd <= 30 ? 5 :
-					rnd <= 62 ? 4 :
-					rnd <= 126 ? 3 :
-					rnd <= 254 ? 2 : 1);
-        }
-
-		private string itemIDLookup(int finalItem)
+		private static string itemIDLookup(int finalItem)
 		{
 			List<content> contentCSV = new List<content>();
 			using (StreamReader reader = new StreamReader(Path.Combine("Data", "Master", "content.csv")))
@@ -561,7 +501,7 @@ namespace FF6KefkaRush.Randomize
 			return contentCSV.Where(c => c.id == finalItem).Single().mes_id_name;
 		}
 
-		private string itemLookup(string mesName, string language)
+		private static string itemLookup(string mesName, string language)
 		{
 			// Get mes_id_name from content.csv, then get accordingly name from whatever language you're using. (system_xx)
 			List<message> records = new List<message>();

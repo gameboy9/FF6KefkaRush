@@ -68,7 +68,7 @@ namespace FF6KefkaRush.Inventory
 			new armor() { id = 210, job_equip_id = 25, tier = 5 }, // t5
 			new armor() { id = 211, job_equip_id = 22, tier = 7 }, // t7
 			new armor() { id = 212, job_equip_id = 22, tier = 7 }, // t7
-			new armor() { id = 213, job_equip_id = 22, tier = 1 }, // t1
+			//new armor() { id = 213, job_equip_id = 22, tier = 1 }, // t1 - Let's comment out Cursed Shield for now.
 			new armor() { id = 214, job_equip_id = 22, tier = 9 }, // t9
 			new armor() { id = 215, job_equip_id = 22, tier = 8 }, // t8
 			new armor() { id = 216, job_equip_id = 26, tier = 1 }, // t1

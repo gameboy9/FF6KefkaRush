@@ -50,7 +50,7 @@ namespace FF6KefkaRush
 		private void determineChecks(object sender, EventArgs e)
 		{
 			if (loading && RandoFlags.Text.Length != 8)
-				RandoFlags.Text = "00000000"; // Default flags here
+				RandoFlags.Text = "02a00000"; // Default flags here
 			else if (RandoFlags.Text.Length != 8)
 				return;
 
@@ -135,7 +135,7 @@ namespace FF6KefkaRush
 			catch
 			{
 				// Default flags here
-				RandoFlags.Text = "00000000";
+				RandoFlags.Text = "02a00000";
 				//VisualFlags.Text = "0";
 				// ignore error
 				loading = false;
@@ -151,13 +151,6 @@ namespace FF6KefkaRush
 
 		private void Randomize_Click(object sender, EventArgs e)
 		{
-			if (!File.Exists(Path.Combine(FF6PRFolder.Text, "BepInEx", "plugins", "Memoria.FF6.dll")) 
-				|| !File.Exists(Path.Combine(FF6PRFolder.Text, "BepInEx", "config", "Memoria.FFPR", "Assets.cfg")) || !Directory.Exists(Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets")))
-			{
-				MessageBox.Show("Randomizer assets have not been extracted.  Please extract, then try randomization again.");
-				return;
-			}
-
 			int included = (exCecil.Checked ? 0 : 1) +
 				(exCid.Checked ? 0 : 1) +
 				(exEdge.Checked ? 0 : 1) +
@@ -179,10 +172,15 @@ namespace FF6KefkaRush
 			}
 
 			r1 = new Random(Convert.ToInt32(RandoSeed.Text));
+			NewChecksum.Text = "Updating FF6:  Kefka Rush JSON files..."; NewChecksum.Refresh();
 			update();
+			NewChecksum.Text = "Randomizing party..."; NewChecksum.Refresh();
 			List<int> party = randomizeParty();
+			NewChecksum.Text = "Retrieving equipment restrictions..."; NewChecksum.Refresh();
 			List<int> equippable = JobGroup.GetEquipJobGroupID(party);
+			NewChecksum.Text = "Randomizing rewards..."; NewChecksum.Refresh();
 			randomizeTreasures(equippable);
+			NewChecksum.Text = "Randomizing monsters..."; NewChecksum.Refresh();
 			randomizeMonstersWithBoost(equippable);
 			//new Inventory.Map(r1, Path.Combine(FF4PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"),
 			//		encounterRate.SelectedIndex == 1 || encounterRate.SelectedIndex == 4 ? 2 :
@@ -204,7 +202,7 @@ namespace FF6KefkaRush
 					}
 				}
 			}
-			catch (Exception ex)
+			catch // (Exception ex)
 			{
 				NewChecksum.Text = "COMPLETE - checksum ????????????????";
 			}
@@ -212,7 +210,7 @@ namespace FF6KefkaRush
 
 		private void update()
 		{
-			new Inventory.Updater(Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets"), ref lastGameAssets);  // , "GameAssets", "Serial"
+			new Inventory.Updater(Path.Combine(FF6PRFolder.Text), ref lastGameAssets);  // , "GameAssets", "Serial"
 		}
 
 		private List<int> randomizeParty()
@@ -224,7 +222,7 @@ namespace FF6KefkaRush
 
 		private void randomizeTreasures(List<int> equippable)
 		{
-			new Randomize.Treasure(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Res", "Map"),
+			Treasure.createTreasure(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Res", "Map"),
 				Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Message"), equippable);
 		}
 

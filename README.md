@@ -8,13 +8,16 @@ Download the FF6KefkaRush.zip file, and extract it.  Run the EXE, locate your MA
 
 # Other notable changes
 - This is based off of Memoria, and in that spirit, you can toggle encounters on and off by pressing "F2". (this is HIGHLY discouraged!)
+- If you are given the Phantom Train scenario, you do not need to flip the switches to "stop the train"; you can go straight to the train boss fight.
+  - Additionally, the ghosts are the only place you can sell and purchase things... I probably will remove that in future versions.
+- If you are given the Opera scenario, you DO need to go right to flip the switch before going left, per usual.
 
 # Special Thanks
 - mcgrew (Dragon Warrior Randomizer author) for inspiring me to create randomizers
 - Albeoris - author of Memoria for the Pixel Remaster, which really helped me create this randomizer
 ## Beta helpers
 (These have either reported bugs or offered an improvement that was implemented during the 0.x phase)
-- None yet because this just got released...
+- pyroll
 
 NOTE:  This is a beta release.  **This will have bugs!**  Please let me know of those bugs as you encounter them.  Thanks!
 

@@ -43,31 +43,31 @@ namespace FF6KefkaRush
 			this.button1 = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.settingGeneral = new System.Windows.Forms.TabPage();
-			this.label17 = new System.Windows.Forms.Label();
-			this.encounterRate = new System.Windows.Forms.ComboBox();
 			this.magicPointMulti = new System.Windows.Forms.ComboBox();
 			this.xpMultiplier = new System.Windows.Forms.ComboBox();
 			this.label11 = new System.Windows.Forms.Label();
 			this.label8 = new System.Windows.Forms.Label();
-			this.monsterAreaAppropriate = new System.Windows.Forms.CheckBox();
-			this.treasureTypes = new System.Windows.Forms.ComboBox();
-			this.label14 = new System.Windows.Forms.Label();
 			this.settingHero = new System.Windows.Forms.TabPage();
-			this.exYang = new System.Windows.Forms.CheckBox();
+			this.exBiggs = new System.Windows.Forms.CheckBox();
+			this.exWedge = new System.Windows.Forms.CheckBox();
+			this.exGau = new System.Windows.Forms.CheckBox();
+			this.exMog = new System.Windows.Forms.CheckBox();
+			this.exSabin = new System.Windows.Forms.CheckBox();
+			this.exRelm = new System.Windows.Forms.CheckBox();
 			this.firstHero = new System.Windows.Forms.ComboBox();
 			this.label16 = new System.Windows.Forms.Label();
-			this.exPaladinCecil = new System.Windows.Forms.CheckBox();
-			this.exFusoya = new System.Windows.Forms.CheckBox();
-			this.exRosa = new System.Windows.Forms.CheckBox();
-			this.exPorom = new System.Windows.Forms.CheckBox();
-			this.exCid = new System.Windows.Forms.CheckBox();
-			this.exRydia = new System.Windows.Forms.CheckBox();
-			this.exKain = new System.Windows.Forms.CheckBox();
-			this.exTellah = new System.Windows.Forms.CheckBox();
-			this.exEdward = new System.Windows.Forms.CheckBox();
-			this.exEdge = new System.Windows.Forms.CheckBox();
-			this.exPalom = new System.Windows.Forms.CheckBox();
-			this.exCecil = new System.Windows.Forms.CheckBox();
+			this.exEdgar = new System.Windows.Forms.CheckBox();
+			this.exLeo = new System.Windows.Forms.CheckBox();
+			this.exStrago = new System.Windows.Forms.CheckBox();
+			this.exUmaro = new System.Windows.Forms.CheckBox();
+			this.exSetzer = new System.Windows.Forms.CheckBox();
+			this.exShadow = new System.Windows.Forms.CheckBox();
+			this.exLocke = new System.Windows.Forms.CheckBox();
+			this.exCyan = new System.Windows.Forms.CheckBox();
+			this.exCeles = new System.Windows.Forms.CheckBox();
+			this.exBanon = new System.Windows.Forms.CheckBox();
+			this.exGogo = new System.Windows.Forms.CheckBox();
+			this.exTerra = new System.Windows.Forms.CheckBox();
 			this.numHeroes = new System.Windows.Forms.ComboBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.dupCharactersAllowed = new System.Windows.Forms.CheckBox();
@@ -79,7 +79,7 @@ namespace FF6KefkaRush
 			// 
 			// Randomize
 			// 
-			this.Randomize.Location = new System.Drawing.Point(668, 488);
+			this.Randomize.Location = new System.Drawing.Point(668, 418);
 			this.Randomize.Name = "Randomize";
 			this.Randomize.Size = new System.Drawing.Size(120, 29);
 			this.Randomize.TabIndex = 0;
@@ -123,7 +123,7 @@ namespace FF6KefkaRush
 			// NewChecksum
 			// 
 			this.NewChecksum.AutoSize = true;
-			this.NewChecksum.Location = new System.Drawing.Point(12, 535);
+			this.NewChecksum.Location = new System.Drawing.Point(12, 465);
 			this.NewChecksum.Name = "NewChecksum";
 			this.NewChecksum.Size = new System.Drawing.Size(267, 20);
 			this.NewChecksum.TabIndex = 8;
@@ -167,7 +167,7 @@ namespace FF6KefkaRush
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(478, 488);
+			this.button1.Location = new System.Drawing.Point(478, 418);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(140, 29);
 			this.button1.TabIndex = 42;
@@ -179,58 +179,25 @@ namespace FF6KefkaRush
 			// 
 			this.tabControl1.Controls.Add(this.settingGeneral);
 			this.tabControl1.Controls.Add(this.settingHero);
-			this.tabControl1.Location = new System.Drawing.Point(12, 133);
+			this.tabControl1.Location = new System.Drawing.Point(12, 92);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(776, 349);
+			this.tabControl1.Size = new System.Drawing.Size(776, 320);
 			this.tabControl1.TabIndex = 50;
 			// 
 			// settingGeneral
 			// 
-			this.settingGeneral.Controls.Add(this.label17);
-			this.settingGeneral.Controls.Add(this.encounterRate);
 			this.settingGeneral.Controls.Add(this.magicPointMulti);
 			this.settingGeneral.Controls.Add(this.xpMultiplier);
 			this.settingGeneral.Controls.Add(this.label11);
 			this.settingGeneral.Controls.Add(this.label8);
-			this.settingGeneral.Controls.Add(this.monsterAreaAppropriate);
-			this.settingGeneral.Controls.Add(this.treasureTypes);
-			this.settingGeneral.Controls.Add(this.label14);
 			this.settingGeneral.Location = new System.Drawing.Point(4, 29);
 			this.settingGeneral.Name = "settingGeneral";
 			this.settingGeneral.Padding = new System.Windows.Forms.Padding(3);
-			this.settingGeneral.Size = new System.Drawing.Size(768, 316);
+			this.settingGeneral.Size = new System.Drawing.Size(768, 287);
 			this.settingGeneral.TabIndex = 0;
 			this.settingGeneral.Text = "General";
 			this.settingGeneral.UseVisualStyleBackColor = true;
-			// 
-			// label17
-			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(16, 158);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(109, 20);
-			this.label17.TabIndex = 70;
-			this.label17.Text = "Encounter Rate";
-			// 
-			// encounterRate
-			// 
-			this.encounterRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.encounterRate.FormattingEnabled = true;
-			this.encounterRate.Items.AddRange(new object[] {
-            "2x",
-            "1.5x",
-            "1.0x",
-            "0.75x",
-            "0.5x",
-            "0.25x",
-            "0.125x",
-            "1/10000"});
-			this.encounterRate.Location = new System.Drawing.Point(166, 154);
-			this.encounterRate.Name = "encounterRate";
-			this.encounterRate.Size = new System.Drawing.Size(148, 28);
-			this.encounterRate.TabIndex = 69;
-			this.encounterRate.SelectedIndexChanged += new System.EventHandler(this.DetermineFlags);
 			// 
 			// magicPointMulti
 			// 
@@ -245,7 +212,7 @@ namespace FF6KefkaRush
             "4.0x",
             "5.0x",
             "10.0x"});
-			this.magicPointMulti.Location = new System.Drawing.Point(166, 120);
+			this.magicPointMulti.Location = new System.Drawing.Point(156, 43);
 			this.magicPointMulti.Name = "magicPointMulti";
 			this.magicPointMulti.Size = new System.Drawing.Size(148, 28);
 			this.magicPointMulti.TabIndex = 67;
@@ -264,7 +231,7 @@ namespace FF6KefkaRush
             "20x",
             "50x",
             "100x"});
-			this.xpMultiplier.Location = new System.Drawing.Point(166, 87);
+			this.xpMultiplier.Location = new System.Drawing.Point(156, 10);
 			this.xpMultiplier.Name = "xpMultiplier";
 			this.xpMultiplier.Size = new System.Drawing.Size(148, 28);
 			this.xpMultiplier.TabIndex = 65;
@@ -273,7 +240,7 @@ namespace FF6KefkaRush
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(16, 123);
+			this.label11.Location = new System.Drawing.Point(6, 46);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(135, 20);
 			this.label11.TabIndex = 64;
@@ -282,88 +249,110 @@ namespace FF6KefkaRush
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(16, 91);
+			this.label8.Location = new System.Drawing.Point(6, 14);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(94, 20);
 			this.label8.TabIndex = 61;
 			this.label8.Text = "XP Multiplier";
 			// 
-			// monsterAreaAppropriate
-			// 
-			this.monsterAreaAppropriate.AutoSize = true;
-			this.monsterAreaAppropriate.Location = new System.Drawing.Point(16, 47);
-			this.monsterAreaAppropriate.Name = "monsterAreaAppropriate";
-			this.monsterAreaAppropriate.Size = new System.Drawing.Size(338, 24);
-			this.monsterAreaAppropriate.TabIndex = 60;
-			this.monsterAreaAppropriate.Text = "Involve only monsters associated with the area";
-			this.monsterAreaAppropriate.UseVisualStyleBackColor = true;
-			this.monsterAreaAppropriate.Visible = false;
-			this.monsterAreaAppropriate.CheckedChanged += new System.EventHandler(this.DetermineFlags);
-			// 
-			// treasureTypes
-			// 
-			this.treasureTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.treasureTypes.FormattingEnabled = true;
-			this.treasureTypes.Items.AddRange(new object[] {
-            "Standard",
-            "Pro",
-            "Wild"});
-			this.treasureTypes.Location = new System.Drawing.Point(166, 9);
-			this.treasureTypes.Name = "treasureTypes";
-			this.treasureTypes.Size = new System.Drawing.Size(148, 28);
-			this.treasureTypes.TabIndex = 59;
-			this.treasureTypes.Visible = false;
-			this.treasureTypes.SelectedIndexChanged += new System.EventHandler(this.DetermineFlags);
-			// 
-			// label14
-			// 
-			this.label14.AutoSize = true;
-			this.label14.Location = new System.Drawing.Point(6, 17);
-			this.label14.Name = "label14";
-			this.label14.Size = new System.Drawing.Size(105, 20);
-			this.label14.TabIndex = 57;
-			this.label14.Text = "Treasure Types";
-			this.label14.Visible = false;
-			// 
 			// settingHero
 			// 
-			this.settingHero.Controls.Add(this.exYang);
+			this.settingHero.Controls.Add(this.exBiggs);
+			this.settingHero.Controls.Add(this.exWedge);
+			this.settingHero.Controls.Add(this.exGau);
+			this.settingHero.Controls.Add(this.exMog);
+			this.settingHero.Controls.Add(this.exSabin);
+			this.settingHero.Controls.Add(this.exRelm);
 			this.settingHero.Controls.Add(this.firstHero);
 			this.settingHero.Controls.Add(this.label16);
-			this.settingHero.Controls.Add(this.exPaladinCecil);
-			this.settingHero.Controls.Add(this.exFusoya);
-			this.settingHero.Controls.Add(this.exRosa);
-			this.settingHero.Controls.Add(this.exPorom);
-			this.settingHero.Controls.Add(this.exCid);
-			this.settingHero.Controls.Add(this.exRydia);
-			this.settingHero.Controls.Add(this.exKain);
-			this.settingHero.Controls.Add(this.exTellah);
-			this.settingHero.Controls.Add(this.exEdward);
-			this.settingHero.Controls.Add(this.exEdge);
-			this.settingHero.Controls.Add(this.exPalom);
-			this.settingHero.Controls.Add(this.exCecil);
+			this.settingHero.Controls.Add(this.exEdgar);
+			this.settingHero.Controls.Add(this.exLeo);
+			this.settingHero.Controls.Add(this.exStrago);
+			this.settingHero.Controls.Add(this.exUmaro);
+			this.settingHero.Controls.Add(this.exSetzer);
+			this.settingHero.Controls.Add(this.exShadow);
+			this.settingHero.Controls.Add(this.exLocke);
+			this.settingHero.Controls.Add(this.exCyan);
+			this.settingHero.Controls.Add(this.exCeles);
+			this.settingHero.Controls.Add(this.exBanon);
+			this.settingHero.Controls.Add(this.exGogo);
+			this.settingHero.Controls.Add(this.exTerra);
 			this.settingHero.Controls.Add(this.numHeroes);
 			this.settingHero.Controls.Add(this.label6);
 			this.settingHero.Controls.Add(this.dupCharactersAllowed);
 			this.settingHero.Location = new System.Drawing.Point(4, 29);
 			this.settingHero.Name = "settingHero";
 			this.settingHero.Padding = new System.Windows.Forms.Padding(3);
-			this.settingHero.Size = new System.Drawing.Size(768, 316);
+			this.settingHero.Size = new System.Drawing.Size(768, 287);
 			this.settingHero.TabIndex = 1;
 			this.settingHero.Text = "Heroes";
 			this.settingHero.UseVisualStyleBackColor = true;
 			// 
-			// exYang
+			// exBiggs
 			// 
-			this.exYang.AutoSize = true;
-			this.exYang.Location = new System.Drawing.Point(201, 136);
-			this.exYang.Name = "exYang";
-			this.exYang.Size = new System.Drawing.Size(118, 24);
-			this.exYang.TabIndex = 73;
-			this.exYang.Text = "Exclude Yang";
-			this.exYang.UseVisualStyleBackColor = true;
-			this.exYang.Visible = false;
-			this.exYang.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exBiggs.AutoSize = true;
+			this.exBiggs.Location = new System.Drawing.Point(412, 243);
+			this.exBiggs.Name = "exBiggs";
+			this.exBiggs.Size = new System.Drawing.Size(123, 24);
+			this.exBiggs.TabIndex = 78;
+			this.exBiggs.Text = "Exclude Biggs";
+			this.exBiggs.UseVisualStyleBackColor = true;
+			this.exBiggs.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			// 
+			// exWedge
+			// 
+			this.exWedge.AutoSize = true;
+			this.exWedge.Location = new System.Drawing.Point(412, 213);
+			this.exWedge.Name = "exWedge";
+			this.exWedge.Size = new System.Drawing.Size(133, 24);
+			this.exWedge.TabIndex = 77;
+			this.exWedge.Text = "Exclude Wedge";
+			this.exWedge.UseVisualStyleBackColor = true;
+			this.exWedge.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			// 
+			// exGau
+			// 
+			this.exGau.AutoSize = true;
+			this.exGau.Location = new System.Drawing.Point(201, 243);
+			this.exGau.Name = "exGau";
+			this.exGau.Size = new System.Drawing.Size(112, 24);
+			this.exGau.TabIndex = 76;
+			this.exGau.Text = "Exclude Gau";
+			this.exGau.UseVisualStyleBackColor = true;
+			this.exGau.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			// 
+			// exMog
+			// 
+			this.exMog.AutoSize = true;
+			this.exMog.Location = new System.Drawing.Point(201, 213);
+			this.exMog.Name = "exMog";
+			this.exMog.Size = new System.Drawing.Size(117, 24);
+			this.exMog.TabIndex = 75;
+			this.exMog.Text = "Exclude Mog";
+			this.exMog.UseVisualStyleBackColor = true;
+			this.exMog.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			// 
+			// exSabin
+			// 
+			this.exSabin.AutoSize = true;
+			this.exSabin.Location = new System.Drawing.Point(6, 243);
+			this.exSabin.Name = "exSabin";
+			this.exSabin.Size = new System.Drawing.Size(123, 24);
+			this.exSabin.TabIndex = 74;
+			this.exSabin.Text = "Exclude Sabin";
+			this.exSabin.UseVisualStyleBackColor = true;
+			this.exSabin.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			// 
+			// exRelm
+			// 
+			this.exRelm.AutoSize = true;
+			this.exRelm.Location = new System.Drawing.Point(201, 153);
+			this.exRelm.Name = "exRelm";
+			this.exRelm.Size = new System.Drawing.Size(120, 24);
+			this.exRelm.TabIndex = 73;
+			this.exRelm.Text = "Exclude Relm";
+			this.exRelm.UseVisualStyleBackColor = true;
+			this.exRelm.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
 			// firstHero
 			// 
@@ -399,149 +388,137 @@ namespace FF6KefkaRush
 			this.label16.Text = "First Hero";
 			this.label16.Visible = false;
 			// 
-			// exPaladinCecil
+			// exEdgar
 			// 
-			this.exPaladinCecil.AutoSize = true;
-			this.exPaladinCecil.Location = new System.Drawing.Point(6, 196);
-			this.exPaladinCecil.Name = "exPaladinCecil";
-			this.exPaladinCecil.Size = new System.Drawing.Size(170, 24);
-			this.exPaladinCecil.TabIndex = 69;
-			this.exPaladinCecil.Text = "Exclude Paladin Cecil";
-			this.exPaladinCecil.UseVisualStyleBackColor = true;
-			this.exPaladinCecil.Visible = false;
-			this.exPaladinCecil.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exEdgar.AutoSize = true;
+			this.exEdgar.Location = new System.Drawing.Point(6, 213);
+			this.exEdgar.Name = "exEdgar";
+			this.exEdgar.Size = new System.Drawing.Size(125, 24);
+			this.exEdgar.TabIndex = 69;
+			this.exEdgar.Text = "Exclude Edgar";
+			this.exEdgar.UseVisualStyleBackColor = true;
+			this.exEdgar.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exFusoya
+			// exLeo
 			// 
-			this.exFusoya.AutoSize = true;
-			this.exFusoya.Location = new System.Drawing.Point(412, 166);
-			this.exFusoya.Name = "exFusoya";
-			this.exFusoya.Size = new System.Drawing.Size(131, 24);
-			this.exFusoya.TabIndex = 68;
-			this.exFusoya.Text = "Exclude Fusoya";
-			this.exFusoya.UseVisualStyleBackColor = true;
-			this.exFusoya.Visible = false;
-			this.exFusoya.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exLeo.AutoSize = true;
+			this.exLeo.Location = new System.Drawing.Point(412, 183);
+			this.exLeo.Name = "exLeo";
+			this.exLeo.Size = new System.Drawing.Size(110, 24);
+			this.exLeo.TabIndex = 68;
+			this.exLeo.Text = "Exclude Leo";
+			this.exLeo.UseVisualStyleBackColor = true;
+			this.exLeo.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exRosa
+			// exStrago
 			// 
-			this.exRosa.AutoSize = true;
-			this.exRosa.Location = new System.Drawing.Point(201, 106);
-			this.exRosa.Name = "exRosa";
-			this.exRosa.Size = new System.Drawing.Size(118, 24);
-			this.exRosa.TabIndex = 67;
-			this.exRosa.Text = "Exclude Rosa";
-			this.exRosa.UseVisualStyleBackColor = true;
-			this.exRosa.Visible = false;
-			this.exRosa.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exStrago.AutoSize = true;
+			this.exStrago.Location = new System.Drawing.Point(201, 123);
+			this.exStrago.Name = "exStrago";
+			this.exStrago.Size = new System.Drawing.Size(130, 24);
+			this.exStrago.TabIndex = 67;
+			this.exStrago.Text = "Exclude Strago";
+			this.exStrago.UseVisualStyleBackColor = true;
+			this.exStrago.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exPorom
+			// exUmaro
 			// 
-			this.exPorom.AutoSize = true;
-			this.exPorom.Location = new System.Drawing.Point(412, 104);
-			this.exPorom.Name = "exPorom";
-			this.exPorom.Size = new System.Drawing.Size(129, 24);
-			this.exPorom.TabIndex = 66;
-			this.exPorom.Text = "Exclude Porom";
-			this.exPorom.UseVisualStyleBackColor = true;
-			this.exPorom.Visible = false;
-			this.exPorom.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exUmaro.AutoSize = true;
+			this.exUmaro.Location = new System.Drawing.Point(412, 123);
+			this.exUmaro.Name = "exUmaro";
+			this.exUmaro.Size = new System.Drawing.Size(131, 24);
+			this.exUmaro.TabIndex = 66;
+			this.exUmaro.Text = "Exclude Umaro";
+			this.exUmaro.UseVisualStyleBackColor = true;
+			this.exUmaro.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exCid
+			// exSetzer
 			// 
-			this.exCid.AutoSize = true;
-			this.exCid.Location = new System.Drawing.Point(201, 166);
-			this.exCid.Name = "exCid";
-			this.exCid.Size = new System.Drawing.Size(108, 24);
-			this.exCid.TabIndex = 65;
-			this.exCid.Text = "Exclude Cid";
-			this.exCid.UseVisualStyleBackColor = true;
-			this.exCid.Visible = false;
-			this.exCid.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exSetzer.AutoSize = true;
+			this.exSetzer.Location = new System.Drawing.Point(201, 183);
+			this.exSetzer.Name = "exSetzer";
+			this.exSetzer.Size = new System.Drawing.Size(127, 24);
+			this.exSetzer.TabIndex = 65;
+			this.exSetzer.Text = "Exclude Setzer";
+			this.exSetzer.UseVisualStyleBackColor = true;
+			this.exSetzer.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exRydia
+			// exShadow
 			// 
-			this.exRydia.AutoSize = true;
-			this.exRydia.Location = new System.Drawing.Point(6, 166);
-			this.exRydia.Name = "exRydia";
-			this.exRydia.Size = new System.Drawing.Size(123, 24);
-			this.exRydia.TabIndex = 64;
-			this.exRydia.Text = "Exclude Rydia";
-			this.exRydia.UseVisualStyleBackColor = true;
-			this.exRydia.Visible = false;
-			this.exRydia.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exShadow.AutoSize = true;
+			this.exShadow.Location = new System.Drawing.Point(6, 183);
+			this.exShadow.Name = "exShadow";
+			this.exShadow.Size = new System.Drawing.Size(139, 24);
+			this.exShadow.TabIndex = 64;
+			this.exShadow.Text = "Exclude Shadow";
+			this.exShadow.UseVisualStyleBackColor = true;
+			this.exShadow.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exKain
+			// exLocke
 			// 
-			this.exKain.AutoSize = true;
-			this.exKain.Location = new System.Drawing.Point(6, 106);
-			this.exKain.Name = "exKain";
-			this.exKain.Size = new System.Drawing.Size(115, 24);
-			this.exKain.TabIndex = 63;
-			this.exKain.Text = "Exclude Kain";
-			this.exKain.UseVisualStyleBackColor = true;
-			this.exKain.Visible = false;
-			this.exKain.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exLocke.AutoSize = true;
+			this.exLocke.Location = new System.Drawing.Point(6, 123);
+			this.exLocke.Name = "exLocke";
+			this.exLocke.Size = new System.Drawing.Size(124, 24);
+			this.exLocke.TabIndex = 63;
+			this.exLocke.Text = "Exclude Locke";
+			this.exLocke.UseVisualStyleBackColor = true;
+			this.exLocke.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exTellah
+			// exCyan
 			// 
-			this.exTellah.AutoSize = true;
-			this.exTellah.Location = new System.Drawing.Point(6, 136);
-			this.exTellah.Name = "exTellah";
-			this.exTellah.Size = new System.Drawing.Size(125, 24);
-			this.exTellah.TabIndex = 62;
-			this.exTellah.Text = "Exclude Tellah";
-			this.exTellah.UseVisualStyleBackColor = true;
-			this.exTellah.Visible = false;
-			this.exTellah.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exCyan.AutoSize = true;
+			this.exCyan.Location = new System.Drawing.Point(6, 153);
+			this.exCyan.Name = "exCyan";
+			this.exCyan.Size = new System.Drawing.Size(118, 24);
+			this.exCyan.TabIndex = 62;
+			this.exCyan.Text = "Exclude Cyan";
+			this.exCyan.UseVisualStyleBackColor = true;
+			this.exCyan.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exEdward
+			// exCeles
 			// 
-			this.exEdward.AutoSize = true;
-			this.exEdward.Location = new System.Drawing.Point(201, 76);
-			this.exEdward.Name = "exEdward";
-			this.exEdward.Size = new System.Drawing.Size(136, 24);
-			this.exEdward.TabIndex = 61;
-			this.exEdward.Text = "Exclude Edward";
-			this.exEdward.UseVisualStyleBackColor = true;
-			this.exEdward.Visible = false;
-			this.exEdward.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exCeles.AutoSize = true;
+			this.exCeles.Location = new System.Drawing.Point(201, 93);
+			this.exCeles.Name = "exCeles";
+			this.exCeles.Size = new System.Drawing.Size(121, 24);
+			this.exCeles.TabIndex = 61;
+			this.exCeles.Text = "Exclude Celes";
+			this.exCeles.UseVisualStyleBackColor = true;
+			this.exCeles.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exEdge
+			// exBanon
 			// 
-			this.exEdge.AutoSize = true;
-			this.exEdge.Location = new System.Drawing.Point(412, 134);
-			this.exEdge.Name = "exEdge";
-			this.exEdge.Size = new System.Drawing.Size(120, 24);
-			this.exEdge.TabIndex = 60;
-			this.exEdge.Text = "Exclude Edge";
-			this.exEdge.UseVisualStyleBackColor = true;
-			this.exEdge.Visible = false;
-			this.exEdge.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exBanon.AutoSize = true;
+			this.exBanon.Location = new System.Drawing.Point(412, 153);
+			this.exBanon.Name = "exBanon";
+			this.exBanon.Size = new System.Drawing.Size(128, 24);
+			this.exBanon.TabIndex = 60;
+			this.exBanon.Text = "Exclude Banon";
+			this.exBanon.UseVisualStyleBackColor = true;
+			this.exBanon.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exPalom
+			// exGogo
 			// 
-			this.exPalom.AutoSize = true;
-			this.exPalom.Location = new System.Drawing.Point(412, 76);
-			this.exPalom.Name = "exPalom";
-			this.exPalom.Size = new System.Drawing.Size(127, 24);
-			this.exPalom.TabIndex = 59;
-			this.exPalom.Text = "Exclude Palom";
-			this.exPalom.UseVisualStyleBackColor = true;
-			this.exPalom.Visible = false;
-			this.exPalom.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exGogo.AutoSize = true;
+			this.exGogo.Location = new System.Drawing.Point(412, 93);
+			this.exGogo.Name = "exGogo";
+			this.exGogo.Size = new System.Drawing.Size(123, 24);
+			this.exGogo.TabIndex = 59;
+			this.exGogo.Text = "Exclude Gogo";
+			this.exGogo.UseVisualStyleBackColor = true;
+			this.exGogo.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
-			// exCecil
+			// exTerra
 			// 
-			this.exCecil.AutoSize = true;
-			this.exCecil.Location = new System.Drawing.Point(6, 78);
-			this.exCecil.Name = "exCecil";
-			this.exCecil.Size = new System.Drawing.Size(187, 24);
-			this.exCecil.TabIndex = 58;
-			this.exCecil.Text = "Exclude Dk Knight Cecil";
-			this.exCecil.UseVisualStyleBackColor = true;
-			this.exCecil.Visible = false;
-			this.exCecil.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			this.exTerra.AutoSize = true;
+			this.exTerra.Location = new System.Drawing.Point(6, 93);
+			this.exTerra.Name = "exTerra";
+			this.exTerra.Size = new System.Drawing.Size(119, 24);
+			this.exTerra.TabIndex = 58;
+			this.exTerra.Text = "Exclude Terra";
+			this.exTerra.UseVisualStyleBackColor = true;
+			this.exTerra.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
 			// numHeroes
 			// 
@@ -576,14 +553,13 @@ namespace FF6KefkaRush
 			this.dupCharactersAllowed.TabIndex = 49;
 			this.dupCharactersAllowed.Text = "Duplicate characters allowed";
 			this.dupCharactersAllowed.UseVisualStyleBackColor = true;
-			this.dupCharactersAllowed.Visible = false;
 			this.dupCharactersAllowed.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
 			// FF4FabulGauntlet
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(812, 566);
+			this.ClientSize = new System.Drawing.Size(812, 500);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.BrowseForFolder);
@@ -625,35 +601,35 @@ namespace FF6KefkaRush
 		private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage settingGeneral;
-        private System.Windows.Forms.ComboBox treasureTypes;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TabPage settingHero;
         private System.Windows.Forms.CheckBox dupCharactersAllowed;
-        private System.Windows.Forms.CheckBox exPaladinCecil;
-        private System.Windows.Forms.CheckBox exFusoya;
-        private System.Windows.Forms.CheckBox exRosa;
-        private System.Windows.Forms.CheckBox exPorom;
-        private System.Windows.Forms.CheckBox exCid;
-        private System.Windows.Forms.CheckBox exRydia;
-        private System.Windows.Forms.CheckBox exKain;
-        private System.Windows.Forms.CheckBox exTellah;
-        private System.Windows.Forms.CheckBox exEdward;
-        private System.Windows.Forms.CheckBox exEdge;
-        private System.Windows.Forms.CheckBox exPalom;
-        private System.Windows.Forms.CheckBox exCecil;
+        private System.Windows.Forms.CheckBox exEdgar;
+        private System.Windows.Forms.CheckBox exLeo;
+        private System.Windows.Forms.CheckBox exStrago;
+        private System.Windows.Forms.CheckBox exUmaro;
+        private System.Windows.Forms.CheckBox exSetzer;
+        private System.Windows.Forms.CheckBox exShadow;
+        private System.Windows.Forms.CheckBox exLocke;
+        private System.Windows.Forms.CheckBox exCyan;
+        private System.Windows.Forms.CheckBox exCeles;
+        private System.Windows.Forms.CheckBox exBanon;
+        private System.Windows.Forms.CheckBox exGogo;
+        private System.Windows.Forms.CheckBox exTerra;
         private System.Windows.Forms.ComboBox numHeroes;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox firstHero;
         private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.ToolTip hpAdjustTooltip;
-        private System.Windows.Forms.CheckBox exYang;
-		private System.Windows.Forms.Label label17;
-		private System.Windows.Forms.ComboBox encounterRate;
+        private System.Windows.Forms.CheckBox exRelm;
 		private System.Windows.Forms.ComboBox magicPointMulti;
 		private System.Windows.Forms.ComboBox xpMultiplier;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.CheckBox monsterAreaAppropriate;
+		private System.Windows.Forms.CheckBox exBiggs;
+		private System.Windows.Forms.CheckBox exWedge;
+		private System.Windows.Forms.CheckBox exGau;
+		private System.Windows.Forms.CheckBox exMog;
+		private System.Windows.Forms.CheckBox exSabin;
 	}
 }
 

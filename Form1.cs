@@ -20,6 +20,7 @@ namespace FF6KefkaRush
 		bool loading = true;
 		Random r1;
 		DateTime lastGameAssets;
+		const string defaultFlags = "0440000";
 
 		public FF4FabulGauntlet()
 		{
@@ -31,15 +32,14 @@ namespace FF6KefkaRush
 			if (loading) return;
 
 			string flags = "";
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { monsterAreaAppropriate, dupCharactersAllowed }));
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { dupCharactersAllowed }));
 			//// Combo boxes time...
-			flags += convertIntToChar(encounterRate.SelectedIndex + (8 * treasureTypes.SelectedIndex));
-			flags += convertIntToChar(xpMultiplier.SelectedIndex + (8 * magicPointMulti.SelectedIndex));
-			flags += convertIntToChar(0 + (8 * numHeroes.SelectedIndex));
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exCecil, exCid, exEdge, exEdward, exFusoya }));
+			flags += convertIntToChar(xpMultiplier.SelectedIndex + (numHeroes.SelectedIndex * 4));
+			flags += convertIntToChar(magicPointMulti.SelectedIndex);
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exTerra, exLocke, exCyan, exShadow, exEdgar, exSabin }));
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exCeles, exStrago, exRelm, exSetzer, exMog, exGau }));
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exGogo, exUmaro, exBanon, exLeo, exWedge, exBiggs }));
 			flags += convertIntToChar(firstHero.SelectedIndex);
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exKain, exPalom, exPorom, exRosa, exRydia, exTellah }));
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exYang, exPaladinCecil }));
 			RandoFlags.Text = flags;
 
 			//flags = "";
@@ -49,24 +49,22 @@ namespace FF6KefkaRush
 
 		private void determineChecks(object sender, EventArgs e)
 		{
-			if (loading && RandoFlags.Text.Length != 8)
-				RandoFlags.Text = "02a00000"; // Default flags here
-			else if (RandoFlags.Text.Length != 8)
+			if (loading && RandoFlags.Text.Length != defaultFlags.Length)
+				RandoFlags.Text = defaultFlags; // Default flags here
+			else if (RandoFlags.Text.Length != defaultFlags.Length)
 				return;
 
 			loading = true;
 
 			string flags = RandoFlags.Text;
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(0, 1))), new CheckBox[] { monsterAreaAppropriate, dupCharactersAllowed });
-			encounterRate.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(1, 1))) % 8;
-			treasureTypes.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(1, 1))) / 8;
-			xpMultiplier.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(2, 1))) % 8;
-			magicPointMulti.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(2, 1))) / 8;
-			numHeroes.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(3, 1))) / 8;
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(4, 1))), new CheckBox[] { exCecil, exCid, exEdge, exEdward, exFusoya });
-			firstHero.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(5, 1))) % 16;
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(6, 1))), new CheckBox[] { exKain, exPalom, exPorom, exRosa, exRydia, exTellah });
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(7, 1))), new CheckBox[] { exYang, exPaladinCecil });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(0, 1))), new CheckBox[] { dupCharactersAllowed });
+			xpMultiplier.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(1, 1))) % 16;
+			numHeroes.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(1, 1))) / 16;
+			magicPointMulti.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(2, 1)));
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(3, 1))), new CheckBox[] { exTerra, exLocke, exCyan, exShadow, exEdgar, exSabin });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(4, 1))), new CheckBox[] { exCeles, exStrago, exRelm, exSetzer, exMog, exGau  });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(5, 1))), new CheckBox[] { exGogo, exUmaro, exBanon, exLeo, exWedge, exBiggs });
+			firstHero.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(6, 1))) % 32;
 
 			loading = false;
 		}
@@ -135,7 +133,7 @@ namespace FF6KefkaRush
 			catch
 			{
 				// Default flags here
-				RandoFlags.Text = "02a00000";
+				RandoFlags.Text = defaultFlags;
 				//VisualFlags.Text = "0";
 				// ignore error
 				loading = false;
@@ -151,19 +149,24 @@ namespace FF6KefkaRush
 
 		private void Randomize_Click(object sender, EventArgs e)
 		{
-			int included = (exCecil.Checked ? 0 : 1) +
-				(exCid.Checked ? 0 : 1) +
-				(exEdge.Checked ? 0 : 1) +
-				(exEdward.Checked ? 0 : 1) +
-				(exFusoya.Checked ? 0 : 1) +
-				(exKain.Checked ? 0 : 1) +
-				(exPalom.Checked ? 0 : 1) +
-				(exPorom.Checked ? 0 : 1) +
-				(exRosa.Checked ? 0 : 1) +
-				(exRydia.Checked ? 0 : 1) +
-				(exTellah.Checked ? 0 : 1) +
-				(exYang.Checked ? 0 : 1) + 
-				(exPaladinCecil.Checked ? 0 : 1);
+			int included = (exTerra.Checked ? 0 : 1) +
+				(exLocke.Checked ? 0 : 1) +
+				(exCyan.Checked ? 0 : 1) +
+				(exShadow.Checked ? 0 : 1) +
+				(exEdgar.Checked ? 0 : 1) +
+				(exSabin.Checked ? 0 : 1) +
+				(exCeles.Checked ? 0 : 1) +
+				(exStrago.Checked ? 0 : 1) +
+				(exRelm.Checked ? 0 : 1) +
+				(exSetzer.Checked ? 0 : 1) +
+				(exMog.Checked ? 0 : 1) +
+				(exGau.Checked ? 0 : 1) + 
+				(exGogo.Checked ? 0 : 1) + 
+				(exUmaro.Checked ? 0 : 1) + 
+				(exBanon.Checked ? 0 : 1) + 
+				(exLeo.Checked ? 0 : 1) + 
+				(exWedge.Checked ? 0 : 1) +
+				(exBiggs.Checked ? 0 : 1);
 
 			if (included < Convert.ToInt32(numHeroes.SelectedItem) && !dupCharactersAllowed.Checked)
             {
@@ -176,6 +179,7 @@ namespace FF6KefkaRush
 			update();
 			NewChecksum.Text = "Randomizing party..."; NewChecksum.Refresh();
 			List<int> party = randomizeParty();
+			Learning.GauStragoLearn(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"));
 			NewChecksum.Text = "Retrieving equipment restrictions..."; NewChecksum.Refresh();
 			List<int> equippable = JobGroup.GetEquipJobGroupID(party);
 			NewChecksum.Text = "Randomizing rewards..."; NewChecksum.Refresh();
@@ -215,8 +219,10 @@ namespace FF6KefkaRush
 
 		private List<int> randomizeParty()
 		{
-			Randomize.Party party = new Randomize.Party(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Res", "Map"), dupCharactersAllowed.Checked, Convert.ToInt32(numHeroes.SelectedItem), exPaladinCecil.Checked,
-				new bool[] { exCecil.Checked, exKain.Checked, exRydia.Checked, exTellah.Checked, exEdward.Checked, exRosa.Checked, exYang.Checked, exPalom.Checked, exPorom.Checked, exCid.Checked, exEdge.Checked, exFusoya.Checked, exPaladinCecil.Checked });
+			Randomize.Party party = new Randomize.Party(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Res", "Map"), dupCharactersAllowed.Checked, Convert.ToInt32(numHeroes.SelectedItem),
+				new bool[] { exTerra.Checked, exLocke.Checked, exCyan.Checked, exShadow.Checked, exEdgar.Checked, exSabin.Checked, 
+					exCeles.Checked, exStrago.Checked, exRelm.Checked, exSetzer.Checked, exMog.Checked, exGau.Checked, 
+					exGogo.Checked, exUmaro.Checked, exBanon.Checked, exLeo.Checked, exWedge.Checked, exBiggs.Checked });
 			return party.getParty(Convert.ToInt32(numHeroes.SelectedItem)).ToList();
 		}
 
@@ -242,7 +248,7 @@ namespace FF6KefkaRush
 				magicPointMulti.SelectedIndex == 4 ? 3.0 :
 				magicPointMulti.SelectedIndex == 5 ? 4.0 :
 				magicPointMulti.SelectedIndex == 6 ? 5.0 : 10.0;
-			new Monster(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"), xpMulti, mpMulti, monsterAreaAppropriate.Checked, equippable);
+			new Monster(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"), xpMulti, mpMulti, equippable);
 		}
 
 		private void FF4FabulGauntlet_FormClosing(object sender, FormClosingEventArgs e)

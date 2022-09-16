@@ -263,7 +263,6 @@ namespace FF6KefkaRush.Inventory
 		};
 
 		List<limitedMonsters> restrictedMonsters = new();
-		List<int> badMonsters;
 		List<singleMonster> allMonsters;
 
 		public class MonsterTiers
@@ -775,26 +774,6 @@ namespace FF6KefkaRush.Inventory
 			}
 		}
 
-		readonly List<List<int>> monsterBosses = new()
-        {
-			new List<int> { 162, 31, 207 }, // Outside Baron, Mist Cave, Mist/Kaipo
-			new List<int> { 163, 164, 165 }, // Underground Waterway / Damcyan / Antlion Cave
-			new List<int> { 165, 46, 203 }, // Mt. Hobs / Fabul / Fabul Gauntlet
-			new List<int> { 166, 167, 206 }, // Mysidia, Mt. Ordeals
-			new List<int> { 59, 168, 171, 173, 196, 205 }, // Old Baron Waterway (or 173)
-			new List<int> { }, // Magnes Cave
-			new List<int> { 175, 178 }, // Troia / Zot Tower
-			new List<int> { 179, 211, 185, 183 }, // Dwarf Castle, Lower Babil
-			new List<int> { 182 }, // Eblan Area, Upper Babil (2 rounds)
-			new List<int> { 188, 181 }, // Eblan Area, Upper Babil (2 rounds)
-			new List<int> { 189, 190, 193, 124 }, // Cave Of Summons, other underground locations
-			new List<int> { 189, 190, 193, 191 }, // Bahamut Cave / Sylvan Cave / Lunar Overworld
-			new List<int> { 192, 194, 198 }, // Lunar Subterrane / Giant Of Babil
-			new List<int> { 108, 150, 153, 159 }, // Lunar Subterrane Part 2  (2 rounds)
-			new List<int> { 162, 207, 164, 165, 203, 166, 167, 206, 168, 171, 205, 225, 175, 178, 179, 211, 185, 183, 188, 181, 189, 190, 193, 191, 192, 194, 198, 108, 150, 153, 159 } // Lunar Subterrane Part 2  (2 rounds)
-			// Final boss:  217
-		};
-
         readonly List<int> allBosses = new()
         {
 			37, 67, 69, 101, 128, 188, 256, 257, 258, 260, 261, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 275, 276, 279, 280, 281, 282, 284, 285, 286, 287, 
@@ -810,18 +789,19 @@ namespace FF6KefkaRush.Inventory
 			public int followUp = 0;
 		}
 
-		public Monster(Random r1, string directory, double xpMultiplier, double magicPointBoost, bool areaAppropriate, List<int> equippable)
+		public Monster(Random r1, string directory, double xpMultiplier, double magicPointBoost, List<int> equippable)
 		{
 			using (StreamReader reader = new(Path.Combine("csv", "monster.csv")))
 			using (CsvReader csv = new(reader, System.Globalization.CultureInfo.InvariantCulture))
 				allMonsters = csv.GetRecords<singleMonster>().ToList();
 
-			List<int> badMonsters = new();
-
 			List<singleGroup> groups;
 			using (StreamReader reader = new(Path.Combine("csv", "monster_party.csv")))
 			using (CsvReader csv = new(reader, System.Globalization.CultureInfo.InvariantCulture))
 				groups = csv.GetRecords<singleGroup>().ToList();
+
+			// Zone Eater's no good to us.  (370)
+			List<int> badMonsters = new() { 370 };
 
 			MonsterSet ms = new MonsterSet();
 
@@ -837,22 +817,6 @@ namespace FF6KefkaRush.Inventory
 			restrictedMonsters.Add(new limitedMonsters { id = 257, monsterLimit = 1, followUp = -1 }); // Whelk
 			restrictedMonsters.Add(new limitedMonsters { id = 270, monsterLimit = 1, followUp = -1 }); // Crane 1
 			restrictedMonsters.Add(new limitedMonsters { id = 271, monsterLimit = 1, followUp = -1 }); // Crane 2
-
-			// Do not choose Mystery Eggs... they're going to softlock the game without some serious work. (224)
-			// Do not also choose Golbez or the Shadow Dragons... that's just going to get screwy in a hurry. (177, 274)
-			// No Zemus or Zeromus either for obvious reasons.  :) (200, 201, 202, 217)
-			// No Dark Elves unless they transition to the Dark Dragon. (172, 225)
-			// No Li'l Murderer's.  They wind up crashing the game with their mere existance, sadly. (33)
-			// Let's avoid trap doors for now.  (124)
-			// Remove the King and Queen of Eblan (186, 187)
-			// Calcobrena cannot show up in a monster group.  (but the dolls can combine into Calcobrena) (180)
-			// Do not include "character" fights except Dark Knight since we fixed that. (204)
-			// Remove Barnabas-Z and Attack Node since they're worth 20 and 0 XP respectively; not appropriate for "non-area appropriate" flags. (212, 213)
-			// Do not include the Edge Rubicante fight because it's scripted.  (226)
-			// Do not include Elemental Lords except the first phase.  (195, 227, 228)
-			// Let's remove "follow up monsters"... Cindy... Mindy... Nodes... Arms... etc. (199, 214, 169, 170, 175, 176)
-			// There are two trap door entries.  Let's skip 248 instead of 124.
-			//badMonsters = new(){ 224, 177, 274, 200, 201, 202, 217, 172, 225, 33, 186, 187, 180, 204, 212, 213, 226, 195, 227, 228, 199, 214, 169, 170, 175, 176, 248 };
 
 			int lastMonster;
 			int maxPercentHP;
@@ -910,9 +874,18 @@ namespace FF6KefkaRush.Inventory
 				itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
 				itemsAvailable.AddRange(new Accessories().getList(minTier, maxTier, true, equippable));
 
-				iMonster.drop_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
-				iMonster.drop_content_id2_value = 1 + (new Items().getList(minTier, maxTier, true).Contains(iMonster.drop_content_id2) ? (r1.Next() % 5) : 0);
-				iMonster.steal_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+				if (itemsAvailable.Count > 0)
+				{
+					iMonster.drop_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+					iMonster.drop_content_id2_value = 1 + (new Items().getList(minTier, maxTier, true).Contains(iMonster.drop_content_id2) ? (r1.Next() % 5) : 0);
+					iMonster.steal_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+				} 
+				else
+				{
+					iMonster.drop_content_id2 = 0;
+					iMonster.drop_content_id2_value = 0;
+					iMonster.steal_content_id2 = 0;
+				}
 
 				iMonster.exp = (int)(iMonster.exp * xpMultiplier);
 			}

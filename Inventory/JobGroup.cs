@@ -66,7 +66,7 @@ namespace FF6KefkaRush.Inventory
 			List<int> tempParty = party.ToList();
 			List<int> allowedEquip = new List<int>();
 
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < tempParty.Count; i++)
 			{
 				if (tempParty[i] == 1) tempParty[i] = 19;
 				if (!includeSpecial && tempParty[i] >= 14) tempParty[i] = 22;

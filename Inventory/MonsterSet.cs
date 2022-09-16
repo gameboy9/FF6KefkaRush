@@ -64,11 +64,12 @@ namespace FF6KefkaRush.Inventory
                 singleSet newSet = new singleSet();
                 newSet.id = i;
                 List<int> parties = new List<int>();
+                // Have a double chance of a monster set appearing except the "super set", set 18.
                 for (int j = 0; j < 19; j++) // Do not use 19; that's the boss.
 				{
-                    parties.Add(firstParty + (20 * difficulty) + j);
+                    parties.Add(firstParty + (20 * (difficulty - 1)) + j);
                     if (j != 18)
-                        parties.Add(firstParty + (20 * difficulty) + j);
+                        parties.Add(firstParty + (20 * (difficulty - 1)) + j);
                 }
                 parties.Shuffle(r1);
                 parties.RemoveRange(6, parties.Count - 6);

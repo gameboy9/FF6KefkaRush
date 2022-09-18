@@ -177,6 +177,7 @@ namespace FF6KefkaRush
 			r1 = new Random(Convert.ToInt32(RandoSeed.Text));
 			NewChecksum.Text = "Updating FF6:  Kefka Rush JSON files..."; NewChecksum.Refresh();
 			update();
+			File.Copy(Path.Combine("csv", "game_constant_int.csv"), Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master", "game_constant_int.csv"), true);
 			NewChecksum.Text = "Randomizing party..."; NewChecksum.Refresh();
 			List<int> party = randomizeParty();
 			Learning.GauStragoLearn(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"));

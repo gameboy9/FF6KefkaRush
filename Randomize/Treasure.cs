@@ -50,6 +50,9 @@ namespace FF6KefkaRush.Randomize
 			public int characterID { get; set; }
 		}
 
+		private static List<message> itemStrings;
+		private static List<content> contentCSV = new List<content>();
+
 		public static void createTreasure(Random r1, string directory, string csvDirectory, List<int> equippable)
 		{
 			//List<string> treasureDirectories = new()
@@ -323,9 +326,48 @@ namespace FF6KefkaRush.Randomize
 			int scriptID = 0;
 
 			List<List<int>> finalItems = new List<List<int>>();
+			int[,,] finalItemArray = new int[7, 5, 4];
 			List<int> magiciteUsed = new List<int>();
+			magiciteUsed.Add(64); // Siren is given to you at the beginning of the game.
 			int branchFlags = 0;
 			int setFlags = 0;
+
+			// TODO:  Establish item gaining first.  Do it in a [7][5] format, starting with the [X][0] first, then [X][1], and so forth.
+			for (int level = 0; level < 5; level++)
+			{
+				for (int j = 0; j < 7; j++)
+				{
+					bool allScenarios = j == 6;
+					for (int k = 0; k < 4; k++)
+					{
+						int minTier = (allScenarios ? 5 : 3) + level;
+						int maxTier = minTier + 2;
+						minTier = Math.Min(8, minTier);
+						maxTier = Math.Min(9, maxTier);
+						int finalItem = -1;
+						List<int> itemsAvailable = new List<int>();
+
+						List<int> magicite = new Magicite().getList(magiciteUsed, Math.Min(6, minTier), Math.Min(8, maxTier));
+
+						itemsAvailable.AddRange(magicite);
+						if ((level == 0 && r1.Next() % 3 > 0) || (level == 1 && r1.Next() % 2 > 0) || magicite.Count == 0)
+						{
+							itemsAvailable.AddRange(new Weapons().getList(minTier, maxTier, true, equippable));
+							itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
+							itemsAvailable.AddRange(new Accessories().getList(minTier, maxTier, true, equippable));
+						}
+
+						if (itemsAvailable.Count > 0)
+							finalItem = itemsAvailable[r1.Next() % itemsAvailable.Count];
+
+						if (magicite.Contains(finalItem))
+							magiciteUsed.Add(finalItem);
+
+						finalItemArray[j, level, k] = finalItem;
+					}
+				}
+			}
+
 			foreach (int game in minigameSelections)
 			{
 				bool allScenarios = (game == 50);
@@ -333,6 +375,7 @@ namespace FF6KefkaRush.Randomize
 				string json = File.ReadAllText(Path.Combine(directory, script));
 				EventJSON jEvents = JsonConvert.DeserializeObject<EventJSON>(json);
 				List<int> scriptItems = new List<int>();
+				int miniGame = minigameSelections.IndexOf(game) + 1;
 				int rewardMsg = 0;
 				int getItems = 0;
 				foreach (var singleScript in jEvents.Mnemonics)
@@ -350,36 +393,13 @@ namespace FF6KefkaRush.Randomize
 					if (singleScript.mnemonic == "GetItem")
 					{
 						int level = getItems / 4;
-						getItems++;
-						int minTier = (allScenarios ? 5 : 3) + level;
-						int maxTier = minTier + 2;
-						minTier = Math.Min(8, minTier);
-						maxTier = Math.Min(9, maxTier);
-						int finalItem = -1;
-						List<int> itemsAvailable = new List<int>();
-						
-						List<int> magicite = new Magicite().getList(magiciteUsed, Math.Min(6, minTier), Math.Min(8, maxTier));
 
-						itemsAvailable.AddRange(magicite);
-						if ((level == 0 && r1.Next() % 3 > 0) || (level == 1 && r1.Next() % 2 > 0) || magicite.Count == 0)
-						{
-							itemsAvailable.AddRange(new Weapons().getList(minTier, maxTier, true, equippable));
-							itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
-							itemsAvailable.AddRange(new Accessories().getList(minTier, maxTier, true, equippable));
-						}
-
-						if (itemsAvailable.Count > 0)
-							finalItem = itemsAvailable[r1.Next() % itemsAvailable.Count];
-
-						if (magicite.Contains(finalItem))
-							magiciteUsed.Add(finalItem);
-
-						singleScript.operands.iValues[0] = finalItem;
+						singleScript.operands.iValues[0] = finalItemArray[miniGame - 1, level, getItems % 4];
 						singleScript.operands.iValues[1] = 1;
-						scriptItems.Add(finalItem);
+
+						getItems++;
 					}
 
-					int miniGame = minigameSelections.IndexOf(game) + 1;
 					if (singleScript.mnemonic == "Msg" && singleScript.operands.sValues[0].Contains("_REWARD_") && miniGame >= 0)
 					{
 						rewardMsg++;
@@ -400,15 +420,39 @@ namespace FF6KefkaRush.Randomize
 			}
 
 			List<Thread> threads = new List<Thread>();
-			Parallel.ForEach(CSVs, csv =>
-			{
-				fillInScript(finalItems, minigameSelections, csv, csvDirectory);
-			});
+			foreach (string csv in CSVs)
+				fillInScript(finalItemArray, minigameSelections, csv, csvDirectory);
 		}
 
-		public static void fillInScript(List<List<int>> finalItems, List<int> minigameSelections, string CSV, string csvDirectory)
+		public static void fillInScript(int[,,] finalItems, List<int> minigameSelections, string CSV, string csvDirectory)
 		{
-			List<message> records = new List<message>();
+			string language = CSV.Replace("story_mes_", "").Replace(".txt", "");
+
+			// Initialization
+			// Get mes_id_name from content.csv, then get accordingly name from whatever language you're using. (system_xx)
+			using (StreamReader reader = new StreamReader(Path.Combine("Data", "Message", "system_" + language + ".txt")))
+			{
+				CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
+				config.Delimiter = "\t";
+				config.HasHeaderRecord = false;
+				config.BadDataFound = null;
+
+				using (CsvReader csv = new CsvReader(reader, config))
+					itemStrings = csv.GetRecords<message>().ToList();
+			}
+
+			using (StreamReader reader = new StreamReader(Path.Combine("Data", "Master", "content.csv")))
+			{
+				CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
+				config.Delimiter = ",";
+				config.HasHeaderRecord = true;
+				config.BadDataFound = null;
+
+				using (CsvReader csv = new CsvReader(reader, config))
+					contentCSV = csv.GetRecords<content>().ToList();
+			}
+
+			List<message> missionRecords = new List<message>();
 			using (StreamReader reader = new StreamReader(Path.Combine("Data", "Message", CSV)))
 			{
 				CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
@@ -417,7 +461,7 @@ namespace FF6KefkaRush.Randomize
 				config.BadDataFound = null;
 
 				using (CsvReader csv = new CsvReader(reader, config))
-					records = csv.GetRecords<message>().ToList();
+					missionRecords = csv.GetRecords<message>().ToList();
 			}
 
 			for (int j = 1; j <= 7; j++)
@@ -425,14 +469,14 @@ namespace FF6KefkaRush.Randomize
 				for (int k = 1; k <= 5; k++)
 				{
 					string found = "";
-					message record = records.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim() + "_REWARD_0" + k.ToString().Trim()).Single();
+					message record = missionRecords.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim() + "_REWARD_0" + k.ToString().Trim()).Single();
 					string level = (k == 1 ? "Bronze" : k == 2 ? "Silver" : k == 3 ? "Gold" : k == 4 ? "Diamond" : "Adamant");
 					for (int i = 0; i < 4; i++)
 					{
-						int finalItem = finalItems[j - 1].Count < 5 ? -1 : finalItems[j - 1][((k - 1) * 4) + i];
+						int finalItem = finalItems[j - 1, k - 1, i];
 
 						if (finalItem != -1)
-							found += "You won " + itemLookup(itemIDLookup(finalItem), CSV.Replace("story_mes_", "").Replace(".txt", "")) + "!\\n";
+							found += "You won " + itemLookup(itemIDLookup(finalItem), finalItem >= 62 && finalItem <= 88) + "!\\n";
 					}
 
 					if (j < 7)
@@ -441,7 +485,7 @@ namespace FF6KefkaRush.Randomize
 						record.msgString = "You completed all scenarios at the " + level + " level!<P>\\n" + (found == "" ? "You won nothing!" : found);
 				}
 
-				message missionRecord = records.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim()).Single();
+				message missionRecord = missionRecords.Where(c => c.id == "MISSION_" + j.ToString("0#").Trim()).Single();
 				switch (minigameSelections[j - 1])
 				{
 					case 0:
@@ -471,8 +515,8 @@ namespace FF6KefkaRush.Randomize
 				}
 			}
 
-			message practiceMission = records.Where(c => c.id == "MISSION_10").Single();
-			practiceMission.msgString = "Here you can engage a practice fight.  There will be no special reward, but you will get XP if required.\nChoose your difficulty.";
+			message practiceMission = missionRecords.Where(c => c.id == "MISSION_10").Single();
+			practiceMission.msgString = "Here you can engage a practice fight.  There will be no special reward, but you will get XP if required.\\nChoose your difficulty.";
 
 			using (StreamWriter writer = new StreamWriter(Path.Combine(csvDirectory, CSV)))
 			{
@@ -481,42 +525,18 @@ namespace FF6KefkaRush.Randomize
 				config.HasHeaderRecord = false;
 
 				using (CsvWriter csv = new CsvWriter(writer, config))
-					csv.WriteRecords(records);
+					csv.WriteRecords(missionRecords);
 			}
 		}
 
 		private static string itemIDLookup(int finalItem)
 		{
-			List<content> contentCSV = new List<content>();
-			using (StreamReader reader = new StreamReader(Path.Combine("Data", "Master", "content.csv")))
-			{
-				CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
-				config.Delimiter = ",";
-				config.HasHeaderRecord = true;
-				config.BadDataFound = null;
-
-				using (CsvReader csv = new CsvReader(reader, config))
-					contentCSV = csv.GetRecords<content>().ToList();
-			}
 			return contentCSV.Where(c => c.id == finalItem).Single().mes_id_name;
 		}
 
-		private static string itemLookup(string mesName, string language)
+		private static string itemLookup(string mesName, bool magicite)
 		{
-			// Get mes_id_name from content.csv, then get accordingly name from whatever language you're using. (system_xx)
-			List<message> records = new List<message>();
-			using (StreamReader reader = new StreamReader(Path.Combine("Data", "Message", "system_" + language + ".txt")))
-			{
-				CsvHelper.Configuration.CsvConfiguration config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
-				config.Delimiter = "\t";
-				config.HasHeaderRecord = false;
-				config.BadDataFound = null;
-
-				using (CsvReader csv = new CsvReader(reader, config))
-					records = csv.GetRecords<message>().ToList();
-			}
-
-			return records.Where(c => c.id == mesName).Single().msgString;
+			return itemStrings.Where(c => c.id == mesName).Single().msgString + (magicite ? " " + itemStrings.Where(c => c.id == "MSG_SYSTEM_207").Single().msgString : "");
 		}
 	}
 }

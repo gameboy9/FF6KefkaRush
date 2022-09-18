@@ -198,9 +198,9 @@ namespace FF6KefkaRush.Inventory
 		public List<int> getList(int minTier, int maxTier, bool highTierReduction, List<int> equippable)
 		{
 			List<int> selection = new List<int>();
-			for (int i = minTier - 1; i <= maxTier - 1; i++)
+			for (int i = minTier; i <= maxTier; i++)
 			{
-				int repetition = highTierReduction ? maxTier - i : 1;
+				int repetition = highTierReduction ? maxTier - i + 1 : 1;
 				for (int j = 0; j < repetition; j++)
 					selection.AddRange(allWeapons.Where(c => c.tier == i && equippable.Contains(c.job_equip_id)).Select(c => c.id));
 			}

@@ -78,6 +78,29 @@ namespace FF6KefkaRush.Inventory
 			  new List<int> { megalixer }
 		};
 
+		public int getItem(Random r1, int type, int minTier, int maxTier)
+		{
+			switch (type)
+			{
+				case 1: // Restorative
+					List<int> restorative = new List<int> { potion, driedMeat, hiPotion, xPotion, ether, hiEther, xEther, elixer, megalixer };
+					return restorative[minTier - 1 + (r1.Next() % (maxTier - minTier + 1))];
+				case 2: // Revival
+					List<int> revival = new List<int> { phoenixDown, phoenixDown, holyWater, goldNeedle };
+					return revival[r1.Next() % revival.Count()];
+				case 3: // Status Clearing
+					List<int> statusClear = new List<int> { antidote, eyeDrops, greenCherry, echoScreen };
+					if (maxTier >= 5)
+						statusClear.Add(remedy);
+					return statusClear[r1.Next() % statusClear.Count()];
+				case 4: // Attack item
+					List<int> attack = new List<int> { magiciteShard, superBall, smokeBomb, flameScroll, waterScroll, lightningScroll, invisibilityScroll, shadowScroll };
+					return attack[r1.Next() % attack.Count()];
+				default:
+					throw new Exception("Invalid item type for getItem class");
+			}
+		}
+
 		public int selectItem(Random r1, int minTier, int maxTier, bool highTierReduction)
 		{
 			List<int> selection = getList(minTier, maxTier, highTierReduction);

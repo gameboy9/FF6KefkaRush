@@ -108,6 +108,12 @@ namespace FF6KefkaRush.Randomize
 			using (CsvReader csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture))
 				records = csv.GetRecords<character>().ToList();
 
+			List<init> newInits = new List<init>();
+
+			using (StreamReader reader = new StreamReader(Path.Combine("csv", "initialize_data.csv")))
+			using (CsvReader csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture))
+				newInits = csv.GetRecords<init>().ToList();
+
 			if (duplicates)
 			{
 				for (int i = 0; i < 18; i++)
@@ -168,12 +174,39 @@ namespace FF6KefkaRush.Randomize
 
 			int id = 1;
 			List<character> newRecords = new List<character>();
+			List<int> newCharIDs = new List<int>();
+			List<int> availableIDs = new List<int> { 2, 3, 4, 5, 6, 8, 9, 10 };
+			List<int> allCharIDs = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 };
+			List<int> charsToReassign = new List<int> { 15, 16, 31, 32 };
+			for (int i = 0; i < 4; i++)
+			{
+				if (availableIDs.Contains(characters[i]) || charsToReassign.Contains(characters[i]))
+					availableIDs.Remove(characters[i]);
+			}
+
+			int dupID = 0;
+
 			foreach (int singleChar in characters)
 			{
 				// Next two lines:  Prevents changes done to the single object as well as the list.
-				var oldRecord = records.Where(c => c.id == singleChar).ToList()[0];
-				var newRecord = (character)oldRecord.Clone();
-				newRecord.id = id;
+				character oldRecord = records.Where(c => c.id == singleChar).ToList()[0];
+				character newRecord = (character)oldRecord.Clone();
+				if (id <= 4)
+				{
+					if (newRecords.Any(c => c.id == newRecord.id) || charsToReassign.Contains(characters[id - 1]))
+					{
+						newRecord.id = availableIDs[dupID];
+						dupID++;
+					}
+					else
+					{
+						newRecord.id = oldRecord.id;
+					}
+				} else
+				{
+					newRecord.id = allCharIDs.Min();
+				}
+				allCharIDs.Remove(newRecord.id);
 				newRecord.job_id = newRecord.job_id == 19 ? 1 : newRecord.job_id;
 				newRecords.Add(newRecord);
 				id++;
@@ -185,16 +218,10 @@ namespace FF6KefkaRush.Randomize
 				csv.WriteRecords(newRecords);
 			}
 
-			List<init> newInits = new List<init>();
-
-			using (StreamReader reader = new StreamReader(Path.Combine("csv", "initialize_data.csv")))
-			using (CsvReader csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture))
-				newInits = csv.GetRecords<init>().ToList();
-
-			if (numHeroes < 4) newInits.RemoveAll(c => c.id == 6); else newInits.Where(c => c.id == 6).Single().value1 = 4; // characters[3];
-			if (numHeroes < 3) newInits.RemoveAll(c => c.id == 3); else newInits.Where(c => c.id == 3).Single().value1 = 3; // characters[2];
-			if (numHeroes < 2) newInits.RemoveAll(c => c.id == 2); else newInits.Where(c => c.id == 2).Single().value1 = 2; // characters[1];
-			newInits.Where(c => c.id == 1).Single().value1 = 1; // characters[0];
+			if (numHeroes < 4) newInits.RemoveAll(c => c.id == 6); else newInits.Where(c => c.id == 6).Single().value1 = newRecords[3].id; // characters[3];
+			if (numHeroes < 3) newInits.RemoveAll(c => c.id == 3); else newInits.Where(c => c.id == 3).Single().value1 = newRecords[2].id; // characters[2];
+			if (numHeroes < 2) newInits.RemoveAll(c => c.id == 2); else newInits.Where(c => c.id == 2).Single().value1 = newRecords[1].id; // characters[1];
+			newInits.Where(c => c.id == 1).Single().value1 = newRecords[0].id; // characters[0];
 
 			int startingGold = 0;
 			newInits.Where(c => c.id == 4).Single().value1 = startingGold;
@@ -211,18 +238,10 @@ namespace FF6KefkaRush.Randomize
 				id = 1;
 				foreach (character record in newRecords)
 				{
-					writer.WriteLine(id.ToString().Trim() + "," + id.ToString().Trim() + "," + record.job_id.ToString().Trim() + ",1,1");
+					writer.WriteLine(record.id.ToString().Trim() + "," + record.id.ToString().Trim() + "," + record.job_id.ToString().Trim() + ",1,1");
 					id++;
 				}
 			}
-
-			// If Palom and Porom are in the group, we need to adjust the Twincast command.
-			//while (characters.Count > 5)
-			//	characters.RemoveAt(characters.Count - 1);
-			//if (characters.Where(c => c == palom).Count() == 1 && characters.Where(c => c == porom).Count() == 1)
-			//	new Inventory.Command().adjustTwinCast(characters.IndexOf(palom) + 1, characters.IndexOf(porom) + 1, Path.Combine(directory, "..", "..", "Data", "Master"));
-			//else
-			//	new Inventory.Command().adjustTwinCast(9, 10, Path.Combine(directory, "..", "..", "Data", "Master")); // Setting Palom and Porom back to their original values will disable Twincast.
 		}
 
 		public int[] getParty(int numHeroes)

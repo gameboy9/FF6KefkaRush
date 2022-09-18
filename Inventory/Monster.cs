@@ -844,6 +844,14 @@ namespace FF6KefkaRush.Inventory
 				int maxTier = iMonster.exp < 100 ? 1 : iMonster.exp < 250 ? 2 : iMonster.exp < 500 ? 3 : iMonster.exp < 1000 ? 4 : iMonster.exp < 2000 ? 5 : iMonster.exp < 5000 ? 6 : 7;
 				List<int> itemsAvailable = new List<int>();
 
+				// New rules for basic monsters:
+				// 45% chance of getting restorative item
+				// 15% chance of getting revival item (phoenix down, holy water, gold needle)
+				// 10% chance of getting status corrective or other item
+				// 5% chance of getting attack item
+				// 15% chance of getting weapon or armor
+				// 10% chance of getting accessory
+
 				if (allBosses.Contains(iMonster.id))
 				{
 					minTier += 1;
@@ -853,39 +861,64 @@ namespace FF6KefkaRush.Inventory
 					itemsAvailable.AddRange(new Weapons().getList(minTier, maxTier, true, equippable));
 					itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
 					itemsAvailable.AddRange(new Accessories().getList(minTier, maxTier, true, equippable));
-					itemsAvailable.AddRange(new Items().getList(minTier, maxTier, true));
+					if (itemsAvailable.Count > 0)
+					{
+						iMonster.drop_content_id1 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.steal_content_id1 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.drop_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.steal_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.drop_content_id3 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.steal_content_id3 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.drop_content_id4 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.steal_content_id4 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.drop_content_id5 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+						iMonster.drop_content_id6 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+					} 
+					else
+					{ // Bosses dropping potions... maybe an Ether... AKA a big whammy!
+						iMonster.drop_content_id1 = 2;
+						iMonster.steal_content_id1 = 2;
+						iMonster.drop_content_id2 = 24;
+						iMonster.steal_content_id2 = 24;
+						iMonster.drop_content_id3 = 3;
+						iMonster.steal_content_id3 = 3;
+						iMonster.drop_content_id4 = 5;
+						iMonster.steal_content_id4 = 5;
+						iMonster.drop_content_id5 = 24;
+						iMonster.drop_content_id6 = 3;
+					}
 				}
 				else
 				{
-					itemsAvailable.AddRange(new Items().getList(minTier, maxTier, true));
+					iMonster.drop_content_id1 = new Items().getItem(r1, 1, minTier, maxTier);
+					iMonster.steal_content_id1 = new Items().getItem(r1, 1, minTier, maxTier);
+					iMonster.drop_content_id2 = new Items().getItem(r1, 2, minTier, maxTier);
+					iMonster.steal_content_id2 = new Items().getItem(r1, 2, minTier, maxTier);
+					iMonster.drop_content_id3 = new Items().getItem(r1, 3, minTier, maxTier);
+					iMonster.steal_content_id3 = new Items().getItem(r1, 3, minTier, maxTier);
+					iMonster.drop_content_id4 = new Items().getItem(r1, 4, minTier, maxTier);
+					iMonster.steal_content_id4 = new Items().getItem(r1, 4, minTier, maxTier);
+
+					itemsAvailable.AddRange(new Weapons().getList(minTier, maxTier, true, equippable));
+					itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
+					if (itemsAvailable.Count() > 0)
+						iMonster.drop_content_id5 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+					else
+						iMonster.drop_content_id5 = 2; // Potion... AKA a whammy
+
+					itemsAvailable = new Accessories().getList(minTier, maxTier, true, equippable);
+					if (itemsAvailable.Count() > 0)
+						iMonster.drop_content_id6 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+					else
+						iMonster.drop_content_id6 = 2; // Potion... AKA a whammy
 				}
-				iMonster.drop_content_id1 = itemsAvailable[r1.Next() % itemsAvailable.Count];
+
 				iMonster.drop_content_id1_value = 1;
-				iMonster.steal_content_id1 = itemsAvailable[r1.Next() % itemsAvailable.Count];
-
-				maxTier++;
-				maxTier = maxTier > 9 ? 9 : maxTier;
-				itemsAvailable = new List<int>();
-				if (r1.Next() % 10 == 0)
-				{
-					itemsAvailable.AddRange(new Items().getList(minTier, maxTier, true));
-				}
-				itemsAvailable.AddRange(new Weapons().getList(minTier, maxTier, true, equippable));
-				itemsAvailable.AddRange(new Armor().getList(minTier, maxTier, true, equippable));
-				itemsAvailable.AddRange(new Accessories().getList(minTier, maxTier, true, equippable));
-
-				if (itemsAvailable.Count > 0)
-				{
-					iMonster.drop_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
-					iMonster.drop_content_id2_value = 1 + (new Items().getList(minTier, maxTier, true).Contains(iMonster.drop_content_id2) ? (r1.Next() % 5) : 0);
-					iMonster.steal_content_id2 = itemsAvailable[r1.Next() % itemsAvailable.Count];
-				} 
-				else
-				{
-					iMonster.drop_content_id2 = 0;
-					iMonster.drop_content_id2_value = 0;
-					iMonster.steal_content_id2 = 0;
-				}
+				iMonster.drop_content_id2_value = 1;
+				iMonster.drop_content_id3_value = 1;
+				iMonster.drop_content_id4_value = 1;
+				iMonster.drop_content_id5_value = 1;
+				iMonster.drop_content_id6_value = 1;
 
 				iMonster.exp = (int)(iMonster.exp * xpMultiplier);
 			}

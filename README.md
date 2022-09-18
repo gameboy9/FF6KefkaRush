@@ -18,6 +18,8 @@ Download the FF6KefkaRush.zip file, and extract it.  Run the EXE, locate your MA
 ## Beta helpers
 (These have either reported bugs or offered an improvement that was implemented during the 0.x phase)
 - pyroll
+- Stein121
+- Buffalax
 
 NOTE:  This is a beta release.  **This will have bugs!**  Please let me know of those bugs as you encounter them.  Thanks!
 

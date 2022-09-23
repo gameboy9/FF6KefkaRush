@@ -11,6 +11,7 @@ using CsvHelper.Configuration.Attributes;
 using FF6KefkaRush.Common;
 using System.Diagnostics;
 using System.Threading;
+using System.Configuration;
 
 namespace FF6KefkaRush.Randomize
 {
@@ -249,6 +250,7 @@ namespace FF6KefkaRush.Randomize
 			minigameSelections.Shuffle(r1);
 			minigameSelections = new List<int> { minigameSelections[0], minigameSelections[1], minigameSelections[2], minigameSelections[3], minigameSelections[4], minigameSelections[5] };
 			minigameSelections.Sort();
+			//minigameSelections[5] = 5; // DEBUG
 			minigameSelections.Add(50);
 
 			List<scenarioScript> scScripts = new List<scenarioScript>()
@@ -347,7 +349,7 @@ namespace FF6KefkaRush.Randomize
 						int finalItem = -1;
 						List<int> itemsAvailable = new List<int>();
 
-						List<int> magicite = new Magicite().getList(magiciteUsed, Math.Min(6, minTier), Math.Min(8, maxTier));
+						List<int> magicite = Magicite.getList(magiciteUsed, Math.Min(6, minTier), Math.Min(8, maxTier));
 
 						itemsAvailable.AddRange(magicite);
 						if ((level == 0 && r1.Next() % 3 > 0) || (level == 1 && r1.Next() % 2 > 0) || magicite.Count == 0)

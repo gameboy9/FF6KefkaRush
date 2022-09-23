@@ -188,6 +188,8 @@ namespace FF6KefkaRush.Randomize
 
 			foreach (int singleChar in characters)
 			{
+				if (allCharIDs.Count == 0) break;
+
 				// Next two lines:  Prevents changes done to the single object as well as the list.
 				character oldRecord = records.Where(c => c.id == singleChar).ToList()[0];
 				character newRecord = (character)oldRecord.Clone();

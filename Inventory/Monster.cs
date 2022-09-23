@@ -163,13 +163,13 @@ namespace FF6KefkaRush.Inventory
 			new List<int> { 31, 126 }, // Suriander, Wartpuck
 			new List<int> { 32, 229, 127 }, // Chimera, Vector Chimera, Gorgimera 
 			new List<int> { 33, 164, 225, 128, 282 }, // Behemoth, Intangir, Great Behemoth, Behemoth King (boss) x2 (reg/undead)
-			new List<int> { 34, 129, 330, 415 }, // Fafnir, Vector Lythos, Ice Dragon (boss) x2
+			new List<int> { 34, 129, 330 }, // Fafnir, Vector Lythos, Ice Dragon (boss)
 			new List<int> { 35, 130, 217, 332 }, // Lesser Lopros, Wyvern, Platinum Dragon, Storm Dragon (boss)
-			new List<int> { 36, 214, 131, 338, 411 }, // Fossil Dragon, Black Dragon, Zombie Dragon, Skull Dragon (boss) x2
-			new List<int> { 132, 37, 414, 340, 408 }, // Dragon, Holy Dragon (boss) x2, Red Dragon (boss) x2
-			new List<int> { 38, 339, 409 }, // Fiend Dragon, Blue Dragon (boss) x2
-			new List<int> { 133, 39, 337, 410 }, // Primeval Dragon, Brachiosaur, Gold Dragon (boss) x2
-			new List<int> { 134, 227, 40, 333, 413 }, // Weredragon, Chaos Dragon, Tyrannosaur, Earth Dragon (boss) x2
+			new List<int> { 36, 214, 131, 338 }, // Fossil Dragon, Black Dragon, Zombie Dragon, Skull Dragon (boss)
+			new List<int> { 132, 37, 340 }, // Dragon, Holy Dragon (boss), Red Dragon (boss)
+			new List<int> { 38, 339 }, // Fiend Dragon, Blue Dragon (boss)
+			new List<int> { 133, 39, 337 }, // Primeval Dragon, Brachiosaur, Gold Dragon (boss)
+			new List<int> { 134, 227, 40, 333 }, // Weredragon, Chaos Dragon, Tyrannosaur, Earth Dragon (boss)
 			new List<int> { 41, 135, 205 }, // Darkwind, Cirpius, Caladrius
 			new List<int> { 42, 236, 206, 136 }, // Aepyornis, Venobennu, Tzakmaqiel, Sprinter
 			new List<int> { 43, 231, 137 }, // Vulture, Rukh, Lenergia
@@ -340,7 +340,21 @@ namespace FF6KefkaRush.Inventory
 					sg.battle_background_asset_id = i % 20 == 19 && battleBackground == 16 ? 34 : battleBackground;
 					sg.battle_bgm_asset_id = i % 20 == 19 ? bossbgm : bgm;
 					sg.appearance_production = 1;
-					sg.script_name = initialPartyID == 8100 ? 9024 : 0; // Cultist's Tower - mandatory magic
+					switch (initialPartyID)
+					{
+						case 8100: // Cultist's Tower - mandatory magic
+							sg.script_name = 9024;
+							break;
+						case 5700: // Anything involving a timer needs to involve the sc_b_timer script.
+						case 6100:
+						case 9700:
+						case 9900:
+							sg.script_name = 8021;
+							break;
+						default:
+							sg.script_name = 0;
+							break;
+					}
 					sg.battle_pattern1 = 1;
 					sg.battle_pattern2 = i % 20 == 19 ? 0 : 1;
 					sg.battle_pattern3 = i % 20 == 19 ? 0 : 1;
@@ -377,13 +391,13 @@ namespace FF6KefkaRush.Inventory
 					double magicPoints;
 					if (i % 20 == 19)
 					{
-						magicPoints = xpLimit < 5000 ? 3 : xpLimit < 10000 ? 4 : xpLimit < 20000 ? 5 : xpLimit < 30000 ? 6 : xpLimit < 50000 ? 7 : 8;
+						magicPoints = xpLimit < 1000 ? 3 : xpLimit < 2500 ? 4 : xpLimit < 5000 ? 5 : xpLimit < 10000 ? 6 : xpLimit < 20000 ? 8 : 10;
 						double temp = r1.Next() % 50;
 						magicPoints += temp / 10;
 					}
 					else
 					{
-						magicPoints = xpLimit < 5000 ? 0 : xpLimit < 10000 ? 1 : xpLimit < 20000 ? 2 : xpLimit < 30000 ? 3 : xpLimit < 50000 ? 4 : 5;
+						magicPoints = xpLimit < 1000 ? 0 : xpLimit < 2500 ? 1 : xpLimit < 5000 ? 2 : xpLimit < 10000 ? 3 : xpLimit < 20000 ? 4 : 5;
 						double temp = r1.Next() % 25;
 						magicPoints += temp / 10;
 					}
@@ -541,6 +555,7 @@ namespace FF6KefkaRush.Inventory
 									lastMonster = -1;
 								}
 
+								// Wrexsoul gets joined by Soul Savers
 								if (chosenMonster.id == 291 && monster.Count < 9)
 								{
 									monster.Add(360);
@@ -695,7 +710,7 @@ namespace FF6KefkaRush.Inventory
 					sg = monsterSwap(sg, 271, 3);
 					sg = monsterSwap(sg, 270, 9);
 					
-					// Curlax, Laragorn, MoebiusIf need to be in monster 3/4/9.
+					// Curlax, Laragorn, Moebius need to be in monster 3/4/9.
 					sg = monsterSwap(sg, 290, 3);
 					sg = monsterSwap(sg, 288, 4);
 					sg = monsterSwap(sg, 289, 9);
@@ -778,7 +793,7 @@ namespace FF6KefkaRush.Inventory
         {
 			37, 67, 69, 101, 128, 188, 256, 257, 258, 260, 261, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 275, 276, 279, 280, 281, 282, 284, 285, 286, 287, 
 			288, 289, 290, 291, 292, 293, 296, 297, 298, 300, 301, 302, 303, 304, 306, 309, 310, 313, 317, 318, 319, 325, 329, 330, 332, 333, 335, 337, 338, 339, 340,
-			342, 359, 361, 366, 408, 409, 410, 411, 412, 413, 414, 415
+			342, 359, 361, 366
 		};
 
 		public class limitedMonsters
@@ -800,8 +815,10 @@ namespace FF6KefkaRush.Inventory
 			using (CsvReader csv = new(reader, System.Globalization.CultureInfo.InvariantCulture))
 				groups = csv.GetRecords<singleGroup>().ToList();
 
+			// Intangir has to leave us for now.  It may be causing a battle to end in the victory music, but no award screen appearing, softlocking the game. (164)
 			// Zone Eater's no good to us.  (370)
-			List<int> badMonsters = new() { 370 };
+			// Remove the extra dragons (408-415), although I just zeroed out the XP, which should exclude them in the first place.
+			List<int> badMonsters = new() { 164, 370, 408, 409, 410, 411, 412, 413, 414, 415 };
 
 			MonsterSet ms = new MonsterSet();
 
@@ -817,6 +834,19 @@ namespace FF6KefkaRush.Inventory
 			restrictedMonsters.Add(new limitedMonsters { id = 257, monsterLimit = 1, followUp = -1 }); // Whelk
 			restrictedMonsters.Add(new limitedMonsters { id = 270, monsterLimit = 1, followUp = -1 }); // Crane 1
 			restrictedMonsters.Add(new limitedMonsters { id = 271, monsterLimit = 1, followUp = -1 }); // Crane 2
+			restrictedMonsters.Add(new limitedMonsters { id = 291, monsterLimit = 1, followUp = -1 }); // Wrexsoul
+			restrictedMonsters.Add(new limitedMonsters { id = 309, monsterLimit = 1, followUp = -1 }); // Whelk shell
+			restrictedMonsters.Add(new limitedMonsters { id = 258, monsterLimit = 1, followUp = -1 }); // Angler Whelk
+			restrictedMonsters.Add(new limitedMonsters { id = 310, monsterLimit = 1, followUp = -1 }); // Angler Whelk shell
+			restrictedMonsters.Add(new limitedMonsters { id = 288, monsterLimit = 1, followUp = -1 }); // Curlax
+			restrictedMonsters.Add(new limitedMonsters { id = 289, monsterLimit = 1, followUp = -1 }); // Laragorn
+			restrictedMonsters.Add(new limitedMonsters { id = 290, monsterLimit = 1, followUp = -1 }); // Moebius
+			restrictedMonsters.Add(new limitedMonsters { id = 268, monsterLimit = 1, followUp = -1 }); // Number 128
+			restrictedMonsters.Add(new limitedMonsters { id = 320, monsterLimit = 1, followUp = -1 }); // Right Blade
+			restrictedMonsters.Add(new limitedMonsters { id = 321, monsterLimit = 1, followUp = -1 }); // Left Blade
+			restrictedMonsters.Add(new limitedMonsters { id = 269, monsterLimit = 1, followUp = -1 }); // Inferno
+			restrictedMonsters.Add(new limitedMonsters { id = 322, monsterLimit = 1, followUp = -1 }); // Right Blade
+			restrictedMonsters.Add(new limitedMonsters { id = 323, monsterLimit = 1, followUp = -1 }); // Left Blade
 
 			int lastMonster;
 			int maxPercentHP;

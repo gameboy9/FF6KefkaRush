@@ -20,7 +20,7 @@ namespace FF6KefkaRush
 		bool loading = true;
 		Random r1;
 		DateTime lastGameAssets;
-		const string defaultFlags = "0440000";
+		const string defaultFlags = "06K0000";
 
 		public FF4FabulGauntlet()
 		{
@@ -32,10 +32,10 @@ namespace FF6KefkaRush
 			if (loading) return;
 
 			string flags = "";
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { dupCharactersAllowed }));
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { dupCharactersAllowed, magiciteRoundDown }));
 			//// Combo boxes time...
 			flags += convertIntToChar(xpMultiplier.SelectedIndex + (numHeroes.SelectedIndex * 4));
-			flags += convertIntToChar(magicPointMulti.SelectedIndex);
+			flags += convertIntToChar(magicPointMulti.SelectedIndex + (magiciteMultiplier.SelectedIndex * 8));
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exTerra, exLocke, exCyan, exShadow, exEdgar, exSabin }));
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exCeles, exStrago, exRelm, exSetzer, exMog, exGau }));
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { exGogo, exUmaro, exBanon, exLeo, exWedge, exBiggs }));
@@ -57,10 +57,11 @@ namespace FF6KefkaRush
 			loading = true;
 
 			string flags = RandoFlags.Text;
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(0, 1))), new CheckBox[] { dupCharactersAllowed });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(0, 1))), new CheckBox[] { dupCharactersAllowed, magiciteRoundDown });
 			xpMultiplier.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(1, 1))) % 16;
 			numHeroes.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(1, 1))) / 16;
-			magicPointMulti.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(2, 1)));
+			magicPointMulti.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(2, 1))) % 8;
+			magiciteMultiplier.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(2, 1))) / 8;
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(3, 1))), new CheckBox[] { exTerra, exLocke, exCyan, exShadow, exEdgar, exSabin });
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(4, 1))), new CheckBox[] { exCeles, exStrago, exRelm, exSetzer, exMog, exGau  });
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(5, 1))), new CheckBox[] { exGogo, exUmaro, exBanon, exLeo, exWedge, exBiggs });
@@ -187,13 +188,7 @@ namespace FF6KefkaRush
 			randomizeTreasures(equippable);
 			NewChecksum.Text = "Randomizing monsters..."; NewChecksum.Refresh();
 			randomizeMonstersWithBoost(equippable);
-			//new Inventory.Map(r1, Path.Combine(FF4PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"),
-			//		encounterRate.SelectedIndex == 1 || encounterRate.SelectedIndex == 4 ? 2 :
-			//		encounterRate.SelectedIndex == 3 || encounterRate.SelectedIndex == 5 ? 4 :
-			//		encounterRate.SelectedIndex == 6 ? 8 : 1,
-			//		encounterRate.SelectedIndex == 0 ? 2 :
-			//		encounterRate.SelectedIndex == 1 || encounterRate.SelectedIndex == 3 ? 3 : 1,
-			//	encounterRate.SelectedIndex == 7);
+			magiciteBoost();
 
 			try
 			{
@@ -237,11 +232,19 @@ namespace FF6KefkaRush
 		{
 			double xpMulti = xpMultiplier.SelectedIndex == 0 ? 1.0 :
 				xpMultiplier.SelectedIndex == 1 ? 2.0 :
-				xpMultiplier.SelectedIndex == 2 ? 3.0 :
-				xpMultiplier.SelectedIndex == 3 ? 5.0 :
+				xpMultiplier.SelectedIndex == 2 ? 5.0 :
+				xpMultiplier.SelectedIndex == 3 ? 8.0 :
 				xpMultiplier.SelectedIndex == 4 ? 10.0 :
-				xpMultiplier.SelectedIndex == 5 ? 20.0 :
-				xpMultiplier.SelectedIndex == 6 ? 50.0 : 100.0;
+				xpMultiplier.SelectedIndex == 5 ? 15.0 :
+				xpMultiplier.SelectedIndex == 6 ? 20.0 :
+				xpMultiplier.SelectedIndex == 7 ? 25.0 :
+				xpMultiplier.SelectedIndex == 8 ? 30.0 :
+				xpMultiplier.SelectedIndex == 9 ? 40.0 :
+				xpMultiplier.SelectedIndex == 10 ? 50.0 :
+				xpMultiplier.SelectedIndex == 11 ? 75.0 :
+				xpMultiplier.SelectedIndex == 12 ? 100.0 :
+				xpMultiplier.SelectedIndex == 13 ? 200.0 :
+				xpMultiplier.SelectedIndex == 14 ? 300.0 : 500.0;
 			double mpMulti = magicPointMulti.SelectedIndex == 0 ? 1.0 :
 				magicPointMulti.SelectedIndex == 1 ? 1.5 :
 				magicPointMulti.SelectedIndex == 2 ? 2.0 :
@@ -250,6 +253,18 @@ namespace FF6KefkaRush
 				magicPointMulti.SelectedIndex == 5 ? 4.0 :
 				magicPointMulti.SelectedIndex == 6 ? 5.0 : 10.0;
 			new Monster(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"), xpMulti, mpMulti, equippable);
+		}
+
+		private void magiciteBoost()
+		{
+			double mpMulti = magiciteMultiplier.SelectedIndex == 0 ? 1.0 :
+				magiciteMultiplier.SelectedIndex == 1 ? 1.5 :
+				magiciteMultiplier.SelectedIndex == 2 ? 2.0 :
+				magiciteMultiplier.SelectedIndex == 3 ? 2.5 :
+				magiciteMultiplier.SelectedIndex == 4 ? 3.0 :
+				magiciteMultiplier.SelectedIndex == 5 ? 4.0 :
+				magiciteMultiplier.SelectedIndex == 6 ? 5.0 : 10.0;
+			Magicite.boostMagiciteBonus(Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets"), mpMulti, magiciteRoundDown.Checked);
 		}
 
 		private void FF4FabulGauntlet_FormClosing(object sender, FormClosingEventArgs e)
@@ -301,5 +316,11 @@ namespace FF6KefkaRush
 				}
 			}
 		}
-    }
+
+		private void btnDefaultFlags_Click(object sender, EventArgs e)
+		{
+			RandoFlags.Text = defaultFlags;
+			determineChecks(null, null);
+		}
+	}
 }

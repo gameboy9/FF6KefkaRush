@@ -43,6 +43,9 @@ namespace FF6KefkaRush
 			this.button1 = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.settingGeneral = new System.Windows.Forms.TabPage();
+			this.magiciteRoundDown = new System.Windows.Forms.CheckBox();
+			this.magiciteMultiplier = new System.Windows.Forms.ComboBox();
+			this.label4 = new System.Windows.Forms.Label();
 			this.magicPointMulti = new System.Windows.Forms.ComboBox();
 			this.xpMultiplier = new System.Windows.Forms.ComboBox();
 			this.label11 = new System.Windows.Forms.Label();
@@ -72,6 +75,7 @@ namespace FF6KefkaRush
 			this.label6 = new System.Windows.Forms.Label();
 			this.dupCharactersAllowed = new System.Windows.Forms.CheckBox();
 			this.hpAdjustTooltip = new System.Windows.Forms.ToolTip(this.components);
+			this.btnDefaultFlags = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.settingGeneral.SuspendLayout();
 			this.settingHero.SuspendLayout();
@@ -187,6 +191,9 @@ namespace FF6KefkaRush
 			// 
 			// settingGeneral
 			// 
+			this.settingGeneral.Controls.Add(this.magiciteRoundDown);
+			this.settingGeneral.Controls.Add(this.magiciteMultiplier);
+			this.settingGeneral.Controls.Add(this.label4);
 			this.settingGeneral.Controls.Add(this.magicPointMulti);
 			this.settingGeneral.Controls.Add(this.xpMultiplier);
 			this.settingGeneral.Controls.Add(this.label11);
@@ -198,6 +205,45 @@ namespace FF6KefkaRush
 			this.settingGeneral.TabIndex = 0;
 			this.settingGeneral.Text = "General";
 			this.settingGeneral.UseVisualStyleBackColor = true;
+			// 
+			// magiciteRoundDown
+			// 
+			this.magiciteRoundDown.AutoSize = true;
+			this.magiciteRoundDown.Location = new System.Drawing.Point(367, 79);
+			this.magiciteRoundDown.Name = "magiciteRoundDown";
+			this.magiciteRoundDown.Size = new System.Drawing.Size(117, 24);
+			this.magiciteRoundDown.TabIndex = 70;
+			this.magiciteRoundDown.Text = "Round Down";
+			this.magiciteRoundDown.UseVisualStyleBackColor = true;
+			this.magiciteRoundDown.CheckedChanged += new System.EventHandler(this.DetermineFlags);
+			// 
+			// magiciteMultiplier
+			// 
+			this.magiciteMultiplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.magiciteMultiplier.FormattingEnabled = true;
+			this.magiciteMultiplier.Items.AddRange(new object[] {
+            "1.0x",
+            "1.5x",
+            "2.0x",
+            "2.5x",
+            "3.0x",
+            "4.0x",
+            "5.0x",
+            "10.0x"});
+			this.magiciteMultiplier.Location = new System.Drawing.Point(196, 77);
+			this.magiciteMultiplier.Name = "magiciteMultiplier";
+			this.magiciteMultiplier.Size = new System.Drawing.Size(148, 28);
+			this.magiciteMultiplier.TabIndex = 69;
+			this.magiciteMultiplier.SelectedIndexChanged += new System.EventHandler(this.DetermineFlags);
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(6, 79);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(179, 20);
+			this.label4.TabIndex = 68;
+			this.label4.Text = "Magicite Bonus Multiplier";
 			// 
 			// magicPointMulti
 			// 
@@ -212,7 +258,7 @@ namespace FF6KefkaRush
             "4.0x",
             "5.0x",
             "10.0x"});
-			this.magicPointMulti.Location = new System.Drawing.Point(156, 43);
+			this.magicPointMulti.Location = new System.Drawing.Point(196, 44);
 			this.magicPointMulti.Name = "magicPointMulti";
 			this.magicPointMulti.Size = new System.Drawing.Size(148, 28);
 			this.magicPointMulti.TabIndex = 67;
@@ -225,13 +271,21 @@ namespace FF6KefkaRush
 			this.xpMultiplier.Items.AddRange(new object[] {
             "1x",
             "2x",
-            "3x",
             "5x",
+            "8x",
             "10x",
+            "15x",
             "20x",
+            "25x",
+            "30x",
+            "40x",
             "50x",
-            "100x"});
-			this.xpMultiplier.Location = new System.Drawing.Point(156, 10);
+            "75x",
+            "100x",
+            "200x",
+            "300x",
+            "500x"});
+			this.xpMultiplier.Location = new System.Drawing.Point(196, 11);
 			this.xpMultiplier.Name = "xpMultiplier";
 			this.xpMultiplier.Size = new System.Drawing.Size(148, 28);
 			this.xpMultiplier.TabIndex = 65;
@@ -555,11 +609,22 @@ namespace FF6KefkaRush
 			this.dupCharactersAllowed.UseVisualStyleBackColor = true;
 			this.dupCharactersAllowed.CheckedChanged += new System.EventHandler(this.DetermineFlags);
 			// 
+			// btnDefaultFlags
+			// 
+			this.btnDefaultFlags.Location = new System.Drawing.Point(282, 418);
+			this.btnDefaultFlags.Name = "btnDefaultFlags";
+			this.btnDefaultFlags.Size = new System.Drawing.Size(140, 29);
+			this.btnDefaultFlags.TabIndex = 51;
+			this.btnDefaultFlags.Text = "Default Flags";
+			this.btnDefaultFlags.UseVisualStyleBackColor = true;
+			this.btnDefaultFlags.Click += new System.EventHandler(this.btnDefaultFlags_Click);
+			// 
 			// FF4FabulGauntlet
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(812, 500);
+			this.Controls.Add(this.btnDefaultFlags);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.BrowseForFolder);
@@ -630,6 +695,10 @@ namespace FF6KefkaRush
 		private System.Windows.Forms.CheckBox exGau;
 		private System.Windows.Forms.CheckBox exMog;
 		private System.Windows.Forms.CheckBox exSabin;
+		private System.Windows.Forms.CheckBox magiciteRoundDown;
+		private System.Windows.Forms.ComboBox magiciteMultiplier;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Button btnDefaultFlags;
 	}
 }
 

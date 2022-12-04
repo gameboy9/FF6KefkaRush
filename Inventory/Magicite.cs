@@ -98,6 +98,9 @@ namespace FF6KefkaRush.Inventory
 
 			JsonSerializer serializer1 = new JsonSerializer();
 
+			if (!Directory.Exists(Path.Combine(directory, "Memoria")))
+				Directory.CreateDirectory(Path.Combine(directory, "Memoria"));
+
 			using (StreamWriter sw = new StreamWriter(Path.Combine(directory, "Memoria", "Magicite.json")))
 			using (JsonWriter writer = new JsonTextWriter(sw))
 			{

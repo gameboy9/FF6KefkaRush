@@ -76,15 +76,15 @@ namespace FF6KefkaRush.Inventory
                 parties.Sort();
 
                 newSet.monster_set1 = parties[0];
-                newSet.monster_set1_rate = 80;
+                newSet.monster_set1_rate = 48;
                 newSet.monster_set2 = parties[1];
-                newSet.monster_set2_rate = 80;
+                newSet.monster_set2_rate = 48;
                 newSet.monster_set3 = parties[2];
-                newSet.monster_set3_rate = 80;
+                newSet.monster_set3_rate = 48;
                 newSet.monster_set4 = parties[3];
-                newSet.monster_set4_rate = 80;
+                newSet.monster_set4_rate = 48;
                 newSet.monster_set5 = parties[4];
-                newSet.monster_set5_rate = 80;
+                newSet.monster_set5_rate = 48;
                 newSet.monster_set6 = parties[5];
                 newSet.monster_set6_rate = 16;
                 newSet.monster_set7 = 0;

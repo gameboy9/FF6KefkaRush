@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FF6KefkaRush.Inventory
 {
-    public class Map
+    public static class Map
     {
         private class singleMap
         {
@@ -34,7 +34,45 @@ namespace FF6KefkaRush.Inventory
             public int floor { get; set; }
         }
 
-        public Map(Random r1, string directory, int encNumerator, int encDenominator, bool noEncounters)
+        private class scripts
+        {
+            public int originalID { get; set; }
+			public string originalName { get; set; }
+			public int newID { get; set; }
+			public string newName { get; set; }
+		}
+
+        private class map
+        {
+			public int originalID { get; set; }
+			public string originalName { get; set; }
+			public int newID { get; set; }
+			public string newName { get; set; }
+		}
+
+        private class Assets
+        {
+            List<string> keys { get; set; }
+            List<string> values { get; set; }
+        }
+
+		public static void addDifficulties(string directory, string mapKey)
+        {
+            // TODO:  Add key for each difficulty.  The key will be called [mapKey]-[1-5], depending on difficulty. (AssetsPath.json)
+            // Copy key and value involved for the map
+            // Paste into new key, adding "-[1-5]", depending on difficulty
+            // Copy package.json
+            // Paste into new folder, adding "-[1-5]" to ends of each filename (do not do the same for textures)
+            // Note script IDs by going through each entity_default.json, ev_e_*.json, and sc_e_*.json.  Acquire name for each and place into class
+            // Get lowest script ID from scripts.csv.  Record into variable, then record new IDs into class
+            // Add new IDs to scripts.csv.
+            // Repeat process for maps (map.csv)
+            // Then go through each entity_default.json and ev_e_*.json and adjust the script numbers and map numbers
+
+            // I don't think this is possible right now, not until we at least can export textures.
+        }
+
+        public static void encounterAdjustment(string directory, int encNumerator, int encDenominator, bool noEncounters)
         {
             List<singleMap> allMaps;
 

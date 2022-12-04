@@ -184,8 +184,10 @@ namespace FF6KefkaRush
 			Learning.GauStragoLearn(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Master"));
 			NewChecksum.Text = "Retrieving equipment restrictions..."; NewChecksum.Refresh();
 			List<int> equippable = JobGroup.GetEquipJobGroupID(party);
+			NewChecksum.Text = "Selecting scenarios..."; NewChecksum.Refresh();
+			List<int> minigames = Minigames.determineMinigames(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Res", "Map"));
 			NewChecksum.Text = "Randomizing rewards..."; NewChecksum.Refresh();
-			randomizeTreasures(equippable);
+			randomizeTreasures(equippable, minigames);
 			NewChecksum.Text = "Randomizing monsters..."; NewChecksum.Refresh();
 			randomizeMonstersWithBoost(equippable);
 			magiciteBoost();
@@ -222,10 +224,10 @@ namespace FF6KefkaRush
 			return party.getParty(Convert.ToInt32(numHeroes.SelectedItem)).ToList();
 		}
 
-		private void randomizeTreasures(List<int> equippable)
+		private void randomizeTreasures(List<int> equippable, List<int> minigames)
 		{
 			Treasure.createTreasure(r1, Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Res", "Map"),
-				Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Message"), equippable);
+				Path.Combine(FF6PRFolder.Text, "FINAL FANTASY VI_Data", "StreamingAssets", "Assets", "GameAssets", "Serial", "Data", "Message"), equippable, minigames);
 		}
 
 		private void randomizeMonstersWithBoost(List<int> equippable)

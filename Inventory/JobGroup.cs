@@ -72,6 +72,10 @@ namespace FF6KefkaRush.Inventory
 				if (!includeSpecial && tempParty[i] >= 14) tempParty[i] = 22;
 				if (includeSpecial && tempParty[i] >= 31) tempParty[i] = 18;
 			}
+			if (tempParty.Count == 3) tempParty.Add(0);
+			if (tempParty.Count == 2) tempParty.Add(0);
+			if (tempParty.Count == 1) tempParty.Add(0);
+
 			// TODO: Need to retrieve job_group.csv - a bit cumbersome... job[1-22]_accept -> id - place in new List<int>
 			List<job_group> records;
 
